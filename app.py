@@ -22,7 +22,7 @@ if not os.path.exists(DB_PATH):
     except Exception as e:
         print(f"Database auto-init notice: {e}")
 
-app = Flask(__name__)
+app = Flask(__name__, template_folder='.')
 app.secret_key = 'srivilliputhur_academic_prototype_secret_key_2026'
 CORS(app)
 
