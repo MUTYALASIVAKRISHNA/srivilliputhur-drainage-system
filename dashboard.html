@@ -1,0 +1,238 @@
+{% extends "base.html" %}
+
+{% block title %}Municipality Dashboard | Srivilliputhur Drainage Risk System{% endblock %}
+
+{% block content %}
+<div class="container mx-auto px-4 py-8">
+
+  <!-- Header -->
+  <div class="flex flex-col md:flex-row md:items-center justify-between gap-4 mb-8">
+    <div>
+      <div class="text-xs font-bold text-teal-700 uppercase tracking-wider mb-1 flex items-center gap-1.5">
+        <i class="fa-solid fa-gauge-high"></i> Srivilliputhur Municipality
+      </div>
+      <h1 class="text-2xl md:text-3xl font-extrabold text-slate-900 tracking-tight">
+        Drainage Overflow & Plastic Risk Dashboard
+      </h1>
+      <p class="text-xs text-slate-500 mt-1">
+        Academic Prototype — Consolidated municipal infrastructure data and synthetic ML indicators.
+      </p>
+    </div>
+    <div class="flex items-center gap-2">
+      <a href="{{ url_for('prediction') }}" class="px-3.5 py-2 rounded-xl bg-teal-700 hover:bg-teal-800 text-white text-xs font-bold flex items-center gap-1.5 shadow-sm transition">
+        <i class="fa-solid fa-calculator"></i> Run Prediction
+      </a>
+      <a href="{{ url_for('risk_map') }}" class="px-3.5 py-2 rounded-xl bg-white border border-slate-300 hover:bg-slate-50 text-slate-800 text-xs font-bold flex items-center gap-1.5 shadow-sm transition">
+        <i class="fa-solid fa-map-location-dot text-teal-700"></i> View GIS Map
+      </a>
+    </div>
+  </div>
+
+  <!-- Summary Cards Section (Matching Clean Aesthetic) -->
+  <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-4 mb-8">
+    
+    <!-- Card 1: Total Wards -->
+    <div class="metric-card-clean flex items-center gap-3">
+      <div class="w-11 h-11 rounded-full bg-teal-600 text-white flex items-center justify-center text-base shadow-sm flex-shrink-0">
+        <i class="fa-solid fa-map-pin"></i>
+      </div>
+      <div>
+        <div class="text-[11px] font-semibold text-slate-500">Total Wards</div>
+        <div class="text-2xl font-black text-slate-900 leading-tight">{{ ward_count }}</div>
+        <div class="text-[10px] text-teal-700 font-semibold">100% Verified</div>
+      </div>
+    </div>
+
+    <!-- Card 2: Historical Incidents -->
+    <div class="metric-card-clean flex items-center gap-3">
+      <div class="w-11 h-11 rounded-full bg-rose-600 text-white flex items-center justify-center text-base shadow-sm flex-shrink-0">
+        <i class="fa-solid fa-triangle-exclamation"></i>
+      </div>
+      <div>
+        <div class="text-[11px] font-semibold text-slate-500">Incidents</div>
+        <div class="text-2xl font-black text-slate-900 leading-tight">{{ incident_count }}</div>
+        <div class="text-[10px] text-rose-700 font-semibold">News Archives</div>
+      </div>
+    </div>
+
+    <!-- Card 3: Verified Drains -->
+    <div class="metric-card-clean flex items-center gap-3">
+      <div class="w-11 h-11 rounded-full bg-sky-600 text-white flex items-center justify-center text-base shadow-sm flex-shrink-0">
+        <i class="fa-solid fa-compass-drafting"></i>
+      </div>
+      <div>
+        <div class="text-[11px] font-semibold text-slate-500">Verified Drains</div>
+        <div class="text-2xl font-black text-slate-900 leading-tight">{{ verified_drain_count }}</div>
+        <div class="text-[10px] text-sky-700 font-semibold">Tender W32</div>
+      </div>
+    </div>
+
+    <!-- Card 4: Planned Field Surveys -->
+    <div class="metric-card-clean flex items-center gap-3">
+      <div class="w-11 h-11 rounded-full bg-purple-600 text-white flex items-center justify-center text-base shadow-sm flex-shrink-0">
+        <i class="fa-solid fa-clipboard-list"></i>
+      </div>
+      <div>
+        <div class="text-[11px] font-semibold text-slate-500">Planned Surveys</div>
+        <div class="text-2xl font-black text-slate-900 leading-tight">{{ planned_surveys }}</div>
+        <div class="text-[10px] text-purple-700 font-semibold">Field Required</div>
+      </div>
+    </div>
+
+    <!-- Card 5: Synthetic ML Records -->
+    <div class="metric-card-clean flex items-center gap-3">
+      <div class="w-11 h-11 rounded-full bg-emerald-600 text-white flex items-center justify-center text-base shadow-sm flex-shrink-0">
+        <i class="fa-solid fa-database"></i>
+      </div>
+      <div>
+        <div class="text-[11px] font-semibold text-slate-500">Synthetic Rows</div>
+        <div class="text-2xl font-black text-slate-900 leading-tight">{{ synthetic_count }}</div>
+        <div class="text-[10px] text-emerald-700 font-semibold">Prototype Data</div>
+      </div>
+    </div>
+
+    <!-- Card 6: Current Risk Areas -->
+    <div class="metric-card-clean flex items-center gap-3">
+      <div class="w-11 h-11 rounded-full bg-amber-500 text-white flex items-center justify-center text-base shadow-sm flex-shrink-0">
+        <i class="fa-solid fa-shield-halved"></i>
+      </div>
+      <div>
+        <div class="text-[11px] font-semibold text-slate-500">Current Risk Areas</div>
+        <div class="text-sm font-extrabold text-slate-900 leading-tight">Not Available</div>
+        <div class="text-[10px] text-slate-400 font-medium">Field validation</div>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- Prototype Risk Highlights from Synthetic Dataset -->
+  <div class="bg-white border border-slate-200 rounded-2xl p-6 mb-8 shadow-xs">
+    <div class="flex flex-col md:flex-row md:items-center justify-between gap-2 mb-4 pb-3 border-b border-slate-100">
+      <div>
+        <h2 class="text-sm font-bold text-slate-900 uppercase tracking-wider flex items-center gap-2">
+          <i class="fa-solid fa-chart-pie text-teal-600"></i>
+          Synthetic Prototype Dataset Risk Distribution (50 Records)
+        </h2>
+        <p class="text-xs text-slate-500 mt-0.5">
+          Based on the project's 50-row synthetic demonstration dataset. Notice: 0 HIGH instances exist in the training distribution.
+        </p>
+      </div>
+      <span class="badge-status-synthetic self-start md:self-auto">SYNTHETIC_PROTOTYPE_RESULTS</span>
+    </div>
+
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+      <div class="p-4 bg-emerald-50/70 border border-emerald-200/80 rounded-xl flex items-center justify-between">
+        <div>
+          <div class="text-xs font-semibold text-emerald-800">LOW Risk Drains</div>
+          <div class="text-2xl font-black text-emerald-700 mt-1">{{ low_risk_count }} <span class="text-xs font-normal text-emerald-600">(64.0%)</span></div>
+          <div class="text-[11px] text-emerald-800 mt-1">Normal flow, low plastic obstruction</div>
+        </div>
+        <span class="badge-risk-low"><i class="fa-solid fa-circle-check"></i> LOW</span>
+      </div>
+
+      <div class="p-4 bg-amber-50/70 border border-amber-200/80 rounded-xl flex items-center justify-between">
+        <div>
+          <div class="text-xs font-semibold text-amber-800">MEDIUM Risk Drains</div>
+          <div class="text-2xl font-black text-amber-700 mt-1">{{ medium_risk_count }} <span class="text-xs font-normal text-amber-600">(36.0%)</span></div>
+          <div class="text-[11px] text-amber-800 mt-1">Elevated blockage / high plastic score</div>
+        </div>
+        <span class="badge-risk-medium"><i class="fa-solid fa-circle-exclamation"></i> MEDIUM</span>
+      </div>
+
+      <div class="p-4 bg-rose-50/70 border border-rose-200/80 rounded-xl flex items-center justify-between">
+        <div>
+          <div class="text-xs font-semibold text-rose-800">HIGH Risk Drains</div>
+          <div class="text-2xl font-black text-rose-700 mt-1">0 <span class="text-xs font-normal text-rose-600">(0.0%)</span></div>
+          <div class="text-[11px] text-rose-700 mt-1">No HIGH records in synthetic dataset</div>
+        </div>
+        <span class="badge-risk-high"><i class="fa-solid fa-triangle-exclamation"></i> HIGH</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- Verified Municipal Infrastructure Baseline (Sheet 1C) -->
+  <div class="grid grid-cols-1 lg:grid-cols-3 gap-6 mb-8">
+    <div class="lg:col-span-2 bg-white border border-slate-200 rounded-2xl p-6 shadow-xs">
+      <div class="flex items-center justify-between mb-4 pb-3 border-b border-slate-100">
+        <div>
+          <h2 class="text-sm font-bold text-slate-900 uppercase tracking-wider flex items-center gap-2">
+            <i class="fa-solid fa-landmark text-teal-600"></i>
+            Verified Municipality Infrastructure Statistics
+          </h2>
+          <p class="text-xs text-slate-500 mt-0.5">Sourced from Census 2011, Wikipedia, and SFD Lite Report.</p>
+        </div>
+        <span class="badge-status-historical">HISTORICAL_PUBLIC</span>
+      </div>
+
+      <div class="overflow-x-auto">
+        <table class="w-full text-xs text-left border border-slate-200 rounded-xl overflow-hidden">
+          <thead class="bg-slate-50 text-slate-700 uppercase font-semibold text-[11px] border-b border-slate-200">
+            <tr>
+              <th class="px-3.5 py-3">Parameter</th>
+              <th class="px-3.5 py-3">Official Value</th>
+              <th class="px-3.5 py-3">Year / Benchmark</th>
+              <th class="px-3.5 py-3">Verified Source</th>
+            </tr>
+          </thead>
+          <tbody class="divide-y divide-slate-100">
+            {% for s in stats %}
+            <tr class="hover:bg-slate-50/80 transition">
+              <td class="px-3.5 py-3 font-semibold text-slate-900">{{ s.parameter }}</td>
+              <td class="px-3.5 py-3 font-extrabold text-teal-800">{{ s.value }}</td>
+              <td class="px-3.5 py-3 text-slate-500">{{ s.year if s.year else 'Not Available' }}</td>
+              <td class="px-3.5 py-3 text-slate-600">{{ s.source }}</td>
+            </tr>
+            {% endfor %}
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- 6-Step Municipal UX Workflow Summary -->
+    <div class="bg-gradient-to-br from-slate-900 to-slate-800 text-white rounded-2xl p-6 shadow-md border border-slate-700/60 flex flex-col justify-between">
+      <div>
+        <h3 class="text-sm font-bold text-teal-300 uppercase tracking-wider mb-2 flex items-center gap-2">
+          <i class="fa-solid fa-route"></i> Municipal Decision Journey
+        </h3>
+        <p class="text-xs text-slate-400 mb-4 leading-relaxed">
+          How this prototype guides municipal staff from weather signals to field remediation:
+        </p>
+
+        <ol class="space-y-3 text-xs text-slate-300">
+          <li class="flex items-start gap-2.5">
+            <span class="w-5 h-5 rounded-full bg-teal-500/20 text-teal-300 border border-teal-400/40 text-[10px] flex items-center justify-center font-bold flex-shrink-0 mt-0.5">1</span>
+            <span><strong>Rainfall & Waste:</strong> Rain + litter generate drainage surge.</span>
+          </li>
+          <li class="flex items-start gap-2.5">
+            <span class="w-5 h-5 rounded-full bg-teal-500/20 text-teal-300 border border-teal-400/40 text-[10px] flex items-center justify-center font-bold flex-shrink-0 mt-0.5">2</span>
+            <span><strong>Drain Specs:</strong> Width, depth, and cover type modulate blockage.</span>
+          </li>
+          <li class="flex items-start gap-2.5">
+            <span class="w-5 h-5 rounded-full bg-teal-500/20 text-teal-300 border border-teal-400/40 text-[10px] flex items-center justify-center font-bold flex-shrink-0 mt-0.5">3</span>
+            <span><strong>AI ML Estimation:</strong> Models predict prototype risk levels.</span>
+          </li>
+          <li class="flex items-start gap-2.5">
+            <span class="w-5 h-5 rounded-full bg-teal-500/20 text-teal-300 border border-teal-400/40 text-[10px] flex items-center justify-center font-bold flex-shrink-0 mt-0.5">4</span>
+            <span><strong>GIS Risk Map:</strong> Visualizes geospatial blockage hotspots.</span>
+          </li>
+          <li class="flex items-start gap-2.5">
+            <span class="w-5 h-5 rounded-full bg-teal-500/20 text-teal-300 border border-teal-400/40 text-[10px] flex items-center justify-center font-bold flex-shrink-0 mt-0.5">5</span>
+            <span><strong>Citizen Grievances:</strong> Real-time public incident reports.</span>
+          </li>
+          <li class="flex items-start gap-2.5">
+            <span class="w-5 h-5 rounded-full bg-teal-500/20 text-teal-300 border border-teal-400/40 text-[10px] flex items-center justify-center font-bold flex-shrink-0 mt-0.5">6</span>
+            <span><strong>Maintenance:</strong> Sanitation teams dispatched & logged.</span>
+          </li>
+        </ol>
+      </div>
+
+      <div class="mt-5 pt-3 border-t border-slate-700 text-[11px] text-slate-400">
+        <a href="{{ url_for('methodology') }}" class="text-teal-400 hover:text-teal-300 font-semibold flex items-center gap-1">
+          Read complete 11-Phase Methodology <i class="fa-solid fa-arrow-right text-[10px]"></i>
+        </a>
+      </div>
+    </div>
+  </div>
+
+</div>
+{% endblock %}

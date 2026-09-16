@@ -1,0 +1,148 @@
+{% extends "base.html" %}
+
+{% block title %}Methodology & System Architecture | Srivilliputhur Prototype{% endblock %}
+
+{% block content %}
+<div class="container mx-auto px-4 py-8">
+
+  <!-- Header -->
+  <div class="max-w-4xl mb-8">
+    <div class="text-xs font-bold text-teal-700 uppercase tracking-wider mb-1 flex items-center gap-1.5">
+      <i class="fa-solid fa-diagram-project"></i> Engineering Design
+    </div>
+    <h1 class="text-2xl md:text-3xl font-extrabold text-slate-900 tracking-tight">
+      11-Phase Academic Prototype Methodology
+    </h1>
+    <p class="text-xs text-slate-500 mt-1 leading-relaxed">
+      A systematic multi-tier framework for integrating heterogeneous public data, synthetic machine learning models, GIS mapping, and civic workflows.
+    </p>
+  </div>
+
+  <!-- Methodology Steps (1 to 11) -->
+  <div class="space-y-6 max-w-4xl">
+    
+    <!-- Phase 1 -->
+    <div class="bg-white border border-slate-200 rounded-xl p-6 shadow-sm">
+      <div class="flex items-center gap-3 mb-2">
+        <span class="w-7 h-7 rounded-full bg-teal-100 text-teal-800 font-extrabold text-xs flex items-center justify-center">1</span>
+        <h2 class="text-sm font-bold text-slate-900">Phase 1: Collect & Organize Public City Information</h2>
+      </div>
+      <p class="text-xs text-slate-600 leading-relaxed pl-10">
+        Aggregated accessible government and demographic records: 33 official wards from the Commissioner of Municipal Administration, 2011 Census populations, Wikipedia geographical profiles, and historical sanitation data.
+      </p>
+    </div>
+
+    <!-- Phase 2 -->
+    <div class="bg-white border border-slate-200 rounded-xl p-6 shadow-sm">
+      <div class="flex items-center gap-3 mb-2">
+        <span class="w-7 h-7 rounded-full bg-teal-100 text-teal-800 font-extrabold text-xs flex items-center justify-center">2</span>
+        <h2 class="text-sm font-bold text-slate-900">Phase 2: Strict Data Segregation (Layer 1 vs Layer 2)</h2>
+      </div>
+      <p class="text-xs text-slate-600 leading-relaxed pl-10">
+        Established an uncompromising architectural boundary between real/public evidence (Layer 1: 12 incidents, 1 tender drain, 33 wards, 4 rainfall portals) and synthetic machine learning records (Layer 2: 50 rows). Synthetic data is never masqueraded as physical municipal sensors.
+      </p>
+    </div>
+
+    <!-- Phase 3 -->
+    <div class="bg-white border border-slate-200 rounded-xl p-6 shadow-sm">
+      <div class="flex items-center gap-3 mb-2">
+        <span class="w-7 h-7 rounded-full bg-teal-100 text-teal-800 font-extrabold text-xs flex items-center justify-center">3</span>
+        <h2 class="text-sm font-bold text-slate-900">Phase 3: Validate Synthetic ML Dataset & Investigate Leakage</h2>
+      </div>
+      <p class="text-xs text-slate-600 leading-relaxed pl-10">
+        Conducted exploratory data analysis on the 50 synthetic records. Identified zero HIGH target instances (32 LOW, 18 MEDIUM). Quantified target leakage on <code>Blockage_Percent</code> (\(r=0.8508\)), proving that blockage acts as a trivial proxy rather than an upstream causal factor.
+      </p>
+    </div>
+
+    <!-- Phase 4 -->
+    <div class="bg-white border border-slate-200 rounded-xl p-6 shadow-sm">
+      <div class="flex items-center gap-3 mb-2">
+        <span class="w-7 h-7 rounded-full bg-teal-100 text-teal-800 font-extrabold text-xs flex items-center justify-center">4</span>
+        <h2 class="text-sm font-bold text-slate-900">Phase 4: Train Machine Learning Prototypes</h2>
+      </div>
+      <p class="text-xs text-slate-600 leading-relaxed pl-10">
+        Trained two supervised classification algorithms: <strong>Logistic Regression</strong> (linear baseline) and <strong>Random Forest Classifier</strong> (ensemble non-linear). Developed a leakage-free <em>Causal Pipeline</em> utilizing pre-blockage features: antecedent rainfall, plastic score, channel width/depth, water head, and cleaning recency.
+      </p>
+    </div>
+
+    <!-- Phase 5 -->
+    <div class="bg-white border border-slate-200 rounded-xl p-6 shadow-sm">
+      <div class="flex items-center gap-3 mb-2">
+        <span class="w-7 h-7 rounded-full bg-teal-100 text-teal-800 font-extrabold text-xs flex items-center justify-center">5</span>
+        <h2 class="text-sm font-bold text-slate-900">Phase 5: Model Evaluation & Cross-Validation</h2>
+      </div>
+      <p class="text-xs text-slate-600 leading-relaxed pl-10">
+        Evaluated models using Stratified 5-Fold Cross-Validation, test accuracy, precision, recall, F1-scores, and confusion matrices. Extracted Gini feature importances showing water depth (22.3%) and drain width (16.2%) as primary non-leaking predictors.
+      </p>
+    </div>
+
+    <!-- Phase 6 -->
+    <div class="bg-white border border-slate-200 rounded-xl p-6 shadow-sm">
+      <div class="flex items-center gap-3 mb-2">
+        <span class="w-7 h-7 rounded-full bg-teal-100 text-teal-800 font-extrabold text-xs flex items-center justify-center">6</span>
+        <h2 class="text-sm font-bold text-slate-900">Phase 6: Analyze Rainfall Separately</h2>
+      </div>
+      <p class="text-xs text-slate-600 leading-relaxed pl-10">
+        Distinguished Virudhunagar District regional statistics (NWDP/IMD) from local town events. Prevented misleading claims of nonexistent automated station gauges in Srivilliputhur.
+      </p>
+    </div>
+
+    <!-- Phase 7 -->
+    <div class="bg-white border border-slate-200 rounded-xl p-6 shadow-sm">
+      <div class="flex items-center gap-3 mb-2">
+        <span class="w-7 h-7 rounded-full bg-teal-100 text-teal-800 font-extrabold text-xs flex items-center justify-center">7</span>
+        <h2 class="text-sm font-bold text-slate-900">Phase 7: Analyze Historical Incidents Separately</h2>
+      </div>
+      <p class="text-xs text-slate-600 leading-relaxed pl-10">
+        Cataloged 12 flood events with verbatim reported causes. Avoided the false assumption that all past floods were caused by drainage choking (e.g., differentiating irrigation tank surplus releases from silt blockage).
+      </p>
+    </div>
+
+    <!-- Phase 8 -->
+    <div class="bg-white border border-slate-200 rounded-xl p-6 shadow-sm">
+      <div class="flex items-center gap-3 mb-2">
+        <span class="w-7 h-7 rounded-full bg-teal-100 text-teal-800 font-extrabold text-xs flex items-center justify-center">8</span>
+        <h2 class="text-sm font-bold text-slate-900">Phase 8: Analyze Drainage & Plastic Waste Evidence</h2>
+      </div>
+      <p class="text-xs text-slate-600 leading-relaxed pl-10">
+        Integrated findings from the SFD Lite Report (31 TPD waste generation, 101.1 km open drains) and local municipal enforcement fines along Netaji Road. Established the standardized 4-tier visual observation rubric (NONE, LOW, MEDIUM, HIGH).
+      </p>
+    </div>
+
+    <!-- Phase 9 -->
+    <div class="bg-white border border-slate-200 rounded-xl p-6 shadow-sm">
+      <div class="flex items-center gap-3 mb-2">
+        <span class="w-7 h-7 rounded-full bg-teal-100 text-teal-800 font-extrabold text-xs flex items-center justify-center">9</span>
+        <h2 class="text-sm font-bold text-slate-900">Phase 9: Interactive GIS Risk Mapping</h2>
+      </div>
+      <p class="text-xs text-slate-600 leading-relaxed pl-10">
+        Engineered an interactive Leaflet/OpenStreetMap interface visualizing the 50 synthetic prototype points, verified tender drain infrastructure in Ward 32, and documented flood landmarks with custom risk badges and popup data.
+      </p>
+    </div>
+
+    <!-- Phase 10 -->
+    <div class="bg-white border border-slate-200 rounded-xl p-6 shadow-sm">
+      <div class="flex items-center gap-3 mb-2">
+        <span class="w-7 h-7 rounded-full bg-teal-100 text-teal-800 font-extrabold text-xs flex items-center justify-center">10</span>
+        <h2 class="text-sm font-bold text-slate-900">Phase 10: Citizen Reporting & Maintenance Workflow</h2>
+      </div>
+      <p class="text-xs text-slate-600 leading-relaxed pl-10">
+        Built end-to-end municipal grievance tracking: citizen ticket generation (<code>SVP-REP-2026-XXXX</code>), tracking portal, and sanitation crew dispatch logs with de-silting and waste removal records.
+      </p>
+    </div>
+
+    <!-- Phase 11 -->
+    <div class="bg-white border border-slate-200 rounded-xl p-6 shadow-sm">
+      <div class="flex items-center gap-3 mb-2">
+        <span class="w-7 h-7 rounded-full bg-teal-100 text-teal-800 font-extrabold text-xs flex items-center justify-center">11</span>
+        <h2 class="text-sm font-bold text-slate-900">Phase 11: Future Physical Field Validation</h2>
+      </div>
+      <p class="text-xs text-slate-600 leading-relaxed pl-10">
+        Defined 25 planned field survey points across key town bottlenecks (Bus Stand, Farmers Market, Car Streets). Outlined the protocol for transitioning planned points into verified physical observations once on-site fieldwork is conducted.
+      </p>
+    </div>
+
+  </div>
+
+</div>
+{% endblock %}

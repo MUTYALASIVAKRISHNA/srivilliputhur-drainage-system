@@ -1,0 +1,358 @@
+{% extends "base.html" %}
+
+{% block title %}Home | AI-Based Plastic Waste & Drainage Overflow Risk Prediction{% endblock %}
+
+{% block content %}
+<!-- Realistic Hero Section with Authentic Panoramic Srivilliputhur Landscape -->
+<section class="relative bg-slate-900 overflow-hidden min-h-[560px] flex items-center">
+  <!-- Real Scenic Background Photo -->
+  <div class="absolute inset-0 z-0">
+    <img src="{{ url_for('static', filename='img/hero-bg.jpg') }}" alt="Srivilliputhur Municipal Landscape" class="w-full h-full object-cover object-center" />
+    <!-- Gradient overlay for perfect contrast & readability -->
+    <div class="absolute inset-0 bg-gradient-to-r from-white/95 via-white/80 to-white/25 sm:via-white/75 lg:to-transparent"></div>
+  </div>
+
+  <div class="container mx-auto px-4 py-12 md:py-16 relative z-10">
+    <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 items-center">
+      
+      <!-- Left Column: Title, Subtitle, Features & CTAs (7 Cols) -->
+      <div class="lg:col-span-7">
+        
+        <!-- Academic Prototype Badge -->
+        <div class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-teal-50/90 text-teal-800 border border-teal-200/80 text-[11px] font-bold uppercase tracking-wider backdrop-blur-sm shadow-xs mb-4">
+          <i class="fa-solid fa-graduation-cap text-teal-600"></i>
+          <span>COLLEGE ACADEMIC ENGINEERING PROTOTYPE</span>
+        </div>
+
+        <!-- Main Heading -->
+        <h1 class="text-3xl sm:text-4xl md:text-5xl font-black text-slate-950 tracking-tight leading-[1.15] mb-4">
+          AI-Based Plastic Waste &<br/>
+          <span class="text-teal-700">Drainage Overflow Risk</span><br/>
+          Prediction System
+        </h1>
+
+        <!-- Subtitle -->
+        <p class="text-sm md:text-base text-slate-700 font-normal max-w-xl mb-6 leading-relaxed">
+          Smart monitoring and risk analysis for plastic waste, drainage blockage, and waterlogging in <strong>Srivilliputhur Municipality, Tamil Nadu</strong>.
+        </p>
+
+        <!-- 6 Feature Circular Pills Row -->
+        <div class="flex flex-wrap items-center gap-x-5 gap-y-3 mb-8">
+          <div class="flex items-center gap-2">
+            <div class="w-9 h-9 rounded-full bg-blue-100 text-blue-700 flex items-center justify-center text-sm shadow-xs">
+              <i class="fa-solid fa-brain"></i>
+            </div>
+            <div>
+              <div class="text-xs font-bold text-slate-900 leading-tight">AI/ML</div>
+              <div class="text-[10px] text-slate-500 font-medium">Predict Risk</div>
+            </div>
+          </div>
+
+          <div class="flex items-center gap-2">
+            <div class="w-9 h-9 rounded-full bg-emerald-100 text-emerald-700 flex items-center justify-center text-sm shadow-xs">
+              <i class="fa-solid fa-map-location-dot"></i>
+            </div>
+            <div>
+              <div class="text-xs font-bold text-slate-900 leading-tight">GIS</div>
+              <div class="text-[10px] text-slate-500 font-medium">Visualize Data</div>
+            </div>
+          </div>
+
+          <div class="flex items-center gap-2">
+            <div class="w-9 h-9 rounded-full bg-sky-100 text-sky-700 flex items-center justify-center text-sm shadow-xs">
+              <i class="fa-solid fa-cloud-showers-heavy"></i>
+            </div>
+            <div>
+              <div class="text-xs font-bold text-slate-900 leading-tight">Rainfall</div>
+              <div class="text-[10px] text-slate-500 font-medium">Track Weather</div>
+            </div>
+          </div>
+
+          <div class="flex items-center gap-2">
+            <div class="w-9 h-9 rounded-full bg-purple-100 text-purple-700 flex items-center justify-center text-sm shadow-xs">
+              <i class="fa-solid fa-recycle"></i>
+            </div>
+            <div>
+              <div class="text-xs font-bold text-slate-900 leading-tight">Plastic Waste</div>
+              <div class="text-[10px] text-slate-500 font-medium">Reduce Pollution</div>
+            </div>
+          </div>
+
+          <div class="flex items-center gap-2">
+            <div class="w-9 h-9 rounded-full bg-teal-100 text-teal-700 flex items-center justify-center text-sm shadow-xs">
+              <i class="fa-solid fa-faucet-drip"></i>
+            </div>
+            <div>
+              <div class="text-xs font-bold text-slate-900 leading-tight">Drainage</div>
+              <div class="text-[10px] text-slate-500 font-medium">Monitor Flow</div>
+            </div>
+          </div>
+
+          <div class="flex items-center gap-2">
+            <div class="w-9 h-9 rounded-full bg-amber-100 text-amber-700 flex items-center justify-center text-sm shadow-xs">
+              <i class="fa-solid fa-users"></i>
+            </div>
+            <div>
+              <div class="text-xs font-bold text-slate-900 leading-tight">Citizen Reporting</div>
+              <div class="text-[10px] text-slate-500 font-medium">Build Together</div>
+            </div>
+          </div>
+        </div>
+
+        <!-- 3 CTA Buttons -->
+        <div class="flex flex-wrap items-center gap-3.5">
+          <a href="{{ url_for('risk_map') }}" class="px-5 py-3 rounded-xl bg-teal-700 hover:bg-teal-800 text-white font-bold text-xs shadow-md transition flex items-center gap-2">
+            <i class="fa-solid fa-map-location-dot"></i>
+            <span>View Risk Map</span>
+            <i class="fa-solid fa-arrow-right text-[10px]"></i>
+          </a>
+
+          <a href="{{ url_for('dashboard') }}" class="px-5 py-3 rounded-xl bg-white/95 hover:bg-white text-slate-800 border border-slate-300 font-bold text-xs shadow-sm transition flex items-center gap-2">
+            <i class="fa-solid fa-gauge-high text-teal-700"></i>
+            <span>Open Dashboard</span>
+            <i class="fa-solid fa-arrow-right text-[10px] text-slate-400"></i>
+          </a>
+
+          <a href="{{ url_for('report') }}" class="px-5 py-3 rounded-xl bg-white/95 hover:bg-white text-slate-800 border border-slate-300 font-bold text-xs shadow-sm transition flex items-center gap-2">
+            <i class="fa-solid fa-bullhorn text-teal-700"></i>
+            <span>Report Drainage Issue</span>
+            <i class="fa-solid fa-arrow-right text-[10px] text-slate-400"></i>
+          </a>
+        </div>
+
+      </div>
+
+      <!-- Right Column: Visual Causal Chain Flow (5 Cols) -->
+      <div class="lg:col-span-5 flex flex-col justify-center items-center lg:items-end">
+        
+        <!-- 4 Vibrant Circular Causal Steps with Arrows -->
+        <div class="flex items-center gap-2 sm:gap-3 justify-center bg-white/40 backdrop-blur-md p-4 rounded-3xl border border-white/60 shadow-lg">
+          
+          <!-- Circle 1: Plastic Waste -->
+          <div class="flex flex-col items-center">
+            <div class="causal-circle bg-gradient-to-tr from-sky-600 to-cyan-400">
+              <i class="fa-solid fa-bottle-water"></i>
+            </div>
+            <span class="causal-pill bg-cyan-700">Plastic Waste</span>
+          </div>
+
+          <i class="fa-solid fa-arrow-right text-slate-700 text-sm opacity-60"></i>
+
+          <!-- Circle 2: Rainfall -->
+          <div class="flex flex-col items-center">
+            <div class="causal-circle bg-gradient-to-tr from-blue-600 to-sky-400">
+              <i class="fa-solid fa-cloud-showers-heavy"></i>
+            </div>
+            <span class="causal-pill bg-blue-700">Rainfall</span>
+          </div>
+
+          <i class="fa-solid fa-arrow-right text-slate-700 text-sm opacity-60"></i>
+
+          <!-- Circle 3: Blockage -->
+          <div class="flex flex-col items-center">
+            <div class="causal-circle bg-gradient-to-tr from-amber-500 to-yellow-400">
+              <i class="fa-solid fa-bars-staggered"></i>
+            </div>
+            <span class="causal-pill bg-amber-600">Blockage</span>
+          </div>
+
+          <i class="fa-solid fa-arrow-right text-slate-700 text-sm opacity-60"></i>
+
+          <!-- Circle 4: Overflow -->
+          <div class="flex flex-col items-center">
+            <div class="causal-circle bg-gradient-to-tr from-rose-600 to-red-400">
+              <i class="fa-solid fa-water"></i>
+            </div>
+            <span class="causal-pill bg-rose-600">Overflow</span>
+          </div>
+
+        </div>
+
+        <!-- Glassmorphism Explanatory Card -->
+        <div class="mt-6 p-3.5 bg-slate-900/80 backdrop-blur-md rounded-2xl text-white text-xs border border-white/20 shadow-xl max-w-sm flex items-center gap-3">
+          <div class="w-8 h-8 rounded-full bg-teal-500/20 text-teal-300 flex items-center justify-center text-sm flex-shrink-0">
+            <i class="fa-solid fa-seedling"></i>
+          </div>
+          <div class="text-[11px] leading-relaxed text-slate-200">
+            Using available public information and synthetic ML data to demonstrate drainage-overflow risk assessment.
+          </div>
+        </div>
+
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- Summary Cards Row (Matching the Exact 6 Cards in Mockup) -->
+<section class="py-8 bg-slate-50 border-b border-slate-200/80">
+  <div class="container mx-auto px-4">
+    <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-4">
+      
+      <!-- Card 1: Total Wards -->
+      <div class="metric-card-clean flex items-center gap-3.5">
+        <div class="w-12 h-12 rounded-full bg-teal-600 text-white flex items-center justify-center text-lg shadow-sm flex-shrink-0">
+          <i class="fa-solid fa-map-pin"></i>
+        </div>
+        <div>
+          <div class="text-[11px] font-semibold text-slate-500">Total Wards</div>
+          <div class="text-2xl font-black text-slate-900 leading-tight">33</div>
+          <div class="text-[10px] text-slate-400 font-medium">Municipality wards</div>
+        </div>
+      </div>
+
+      <!-- Card 2: Historical Incidents -->
+      <div class="metric-card-clean flex items-center gap-3.5">
+        <div class="w-12 h-12 rounded-full bg-rose-600 text-white flex items-center justify-center text-lg shadow-sm flex-shrink-0">
+          <i class="fa-solid fa-triangle-exclamation"></i>
+        </div>
+        <div>
+          <div class="text-[11px] font-semibold text-slate-500">Historical Incidents</div>
+          <div class="text-2xl font-black text-slate-900 leading-tight">12</div>
+          <div class="text-[10px] text-slate-400 font-medium">From public news archives</div>
+        </div>
+      </div>
+
+      <!-- Card 3: Verified Drainage Records -->
+      <div class="metric-card-clean flex items-center gap-3.5">
+        <div class="w-12 h-12 rounded-full bg-sky-600 text-white flex items-center justify-center text-lg shadow-sm flex-shrink-0">
+          <i class="fa-solid fa-compass-drafting"></i>
+        </div>
+        <div>
+          <div class="text-[11px] font-semibold text-slate-500">Verified Drainage Records</div>
+          <div class="text-2xl font-black text-slate-900 leading-tight">1</div>
+          <div class="text-[10px] text-slate-400 font-medium">Tender record (Ward 32)</div>
+        </div>
+      </div>
+
+      <!-- Card 4: Planned Field Survey Points -->
+      <div class="metric-card-clean flex items-center gap-3.5">
+        <div class="w-12 h-12 rounded-full bg-purple-600 text-white flex items-center justify-center text-lg shadow-sm flex-shrink-0">
+          <i class="fa-solid fa-clipboard-list"></i>
+        </div>
+        <div>
+          <div class="text-[11px] font-semibold text-slate-500">Planned Field Survey Points</div>
+          <div class="text-2xl font-black text-slate-900 leading-tight">25</div>
+          <div class="text-[10px] text-slate-400 font-medium">To be collected in future</div>
+        </div>
+      </div>
+
+      <!-- Card 5: Synthetic ML Records -->
+      <div class="metric-card-clean flex items-center gap-3.5">
+        <div class="w-12 h-12 rounded-full bg-emerald-600 text-white flex items-center justify-center text-lg shadow-sm flex-shrink-0">
+          <i class="fa-solid fa-database"></i>
+        </div>
+        <div>
+          <div class="text-[11px] font-semibold text-slate-500">Synthetic ML Records</div>
+          <div class="text-2xl font-black text-slate-900 leading-tight">50</div>
+          <div class="text-[10px] text-slate-400 font-medium">Prototype dataset</div>
+        </div>
+      </div>
+
+      <!-- Card 6: Current Risk Areas -->
+      <div class="metric-card-clean flex items-center gap-3.5">
+        <div class="w-12 h-12 rounded-full bg-amber-500 text-white flex items-center justify-center text-lg shadow-sm flex-shrink-0">
+          <i class="fa-solid fa-shield-halved"></i>
+        </div>
+        <div>
+          <div class="text-[11px] font-semibold text-slate-500">Current Risk Areas</div>
+          <div class="text-base sm:text-lg font-extrabold text-slate-900 leading-tight">Not Available</div>
+          <div class="text-[10px] text-slate-400 font-medium">Requires field validation</div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- Integrated System Pillars -->
+<section class="py-14 bg-white">
+  <div class="container mx-auto px-4">
+    <div class="text-center max-w-2xl mx-auto mb-12">
+      <h2 class="text-xs font-bold uppercase tracking-wider text-teal-700 mb-1">Architecture</h2>
+      <h3 class="text-2xl font-bold text-slate-900">Six Integrated Municipal Pillars</h3>
+      <p class="text-xs text-slate-500 mt-1">Combining GIS, machine learning, physical surveying, and civic action.</p>
+    </div>
+
+    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+      <div class="p-6 bg-slate-50/70 border border-slate-200 rounded-xl hover:shadow-md transition">
+        <div class="w-10 h-10 rounded-lg bg-teal-100 text-teal-700 flex items-center justify-center text-lg font-bold mb-3">
+          <i class="fa-solid fa-brain"></i>
+        </div>
+        <h4 class="text-sm font-bold text-slate-900 mb-1.5">AI Drainage Risk Prediction</h4>
+        <p class="text-xs text-slate-600 leading-relaxed mb-4">
+          Logistic Regression & Random Forest classifiers trained on the 50-row synthetic dataset with causal pre-blockage preprocessing.
+        </p>
+        <a href="{{ url_for('prediction') }}" class="text-xs font-semibold text-teal-700 hover:text-teal-900 flex items-center gap-1">
+          Explore ML Models <i class="fa-solid fa-arrow-right text-[10px]"></i>
+        </a>
+      </div>
+
+      <div class="p-6 bg-slate-50/70 border border-slate-200 rounded-xl hover:shadow-md transition">
+        <div class="w-10 h-10 rounded-lg bg-sky-100 text-sky-700 flex items-center justify-center text-lg font-bold mb-3">
+          <i class="fa-solid fa-map"></i>
+        </div>
+        <h4 class="text-sm font-bold text-slate-900 mb-1.5">Interactive GIS Risk Map</h4>
+        <p class="text-xs text-slate-600 leading-relaxed mb-4">
+          Spatial visualization of Srivilliputhur Municipality showing prototype risk locations, verified tender drains, and flood landmarks.
+        </p>
+        <a href="{{ url_for('risk_map') }}" class="text-xs font-semibold text-sky-700 hover:text-sky-900 flex items-center gap-1">
+          Open GIS Map <i class="fa-solid fa-arrow-right text-[10px]"></i>
+        </a>
+      </div>
+
+      <div class="p-6 bg-slate-50/70 border border-slate-200 rounded-xl hover:shadow-md transition">
+        <div class="w-10 h-10 rounded-lg bg-blue-100 text-blue-700 flex items-center justify-center text-lg font-bold mb-3">
+          <i class="fa-solid fa-cloud-rain"></i>
+        </div>
+        <h4 class="text-sm font-bold text-slate-900 mb-1.5">Rainfall & Incident Tracking</h4>
+        <p class="text-xs text-slate-600 leading-relaxed mb-4">
+          Distinguishes Virudhunagar District rainfall records from local historical events, preventing false station claims.
+        </p>
+        <a href="{{ url_for('rainfall') }}" class="text-xs font-semibold text-blue-700 hover:text-blue-900 flex items-center gap-1">
+          View Rainfall Data <i class="fa-solid fa-arrow-right text-[10px]"></i>
+        </a>
+      </div>
+
+      <div class="p-6 bg-slate-50/70 border border-slate-200 rounded-xl hover:shadow-md transition">
+        <div class="w-10 h-10 rounded-lg bg-emerald-100 text-emerald-700 flex items-center justify-center text-lg font-bold mb-3">
+          <i class="fa-solid fa-recycle"></i>
+        </div>
+        <h4 class="text-sm font-bold text-slate-900 mb-1.5">Plastic Waste Evidence</h4>
+        <p class="text-xs text-slate-600 leading-relaxed mb-4">
+          Documented solid waste data from the SFD Lite Report (31 TPD), Resource Recovery Centers (RRC), and local littering fines.
+        </p>
+        <a href="{{ url_for('plastic_waste') }}" class="text-xs font-semibold text-emerald-700 hover:text-emerald-900 flex items-center gap-1">
+          View Waste Stats <i class="fa-solid fa-arrow-right text-[10px]"></i>
+        </a>
+      </div>
+
+      <div class="p-6 bg-slate-50/70 border border-slate-200 rounded-xl hover:shadow-md transition">
+        <div class="w-10 h-10 rounded-lg bg-amber-100 text-amber-700 flex items-center justify-center text-lg font-bold mb-3">
+          <i class="fa-solid fa-faucet-drip"></i>
+        </div>
+        <h4 class="text-sm font-bold text-slate-900 mb-1.5">Drainage Explorer</h4>
+        <p class="text-xs text-slate-600 leading-relaxed mb-4">
+          Searchable inventory with data status classifications: 1 verified tender drain (Bharathi Nagar), municipal totals, and 50 prototype points.
+        </p>
+        <a href="{{ url_for('drains') }}" class="text-xs font-semibold text-amber-700 hover:text-amber-900 flex items-center gap-1">
+          Inspect Drain Records <i class="fa-solid fa-arrow-right text-[10px]"></i>
+        </a>
+      </div>
+
+      <div class="p-6 bg-slate-50/70 border border-slate-200 rounded-xl hover:shadow-md transition">
+        <div class="w-10 h-10 rounded-lg bg-purple-100 text-purple-700 flex items-center justify-center text-lg font-bold mb-3">
+          <i class="fa-solid fa-screwdriver-wrench"></i>
+        </div>
+        <h4 class="text-sm font-bold text-slate-900 mb-1.5">Citizen Reporting & Maintenance</h4>
+        <p class="text-xs text-slate-600 leading-relaxed mb-4">
+          Complete municipal ticket lifecycle: complaint generation, assignment to sanitation squads, de-silting logs, and resolution tracking.
+        </p>
+        <a href="{{ url_for('maintenance') }}" class="text-xs font-semibold text-purple-700 hover:text-purple-900 flex items-center gap-1">
+          Track Maintenance <i class="fa-solid fa-arrow-right text-[10px]"></i>
+        </a>
+      </div>
+    </div>
+  </div>
+</section>
+{% endblock %}

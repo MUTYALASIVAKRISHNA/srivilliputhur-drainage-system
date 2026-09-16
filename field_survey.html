@@ -1,0 +1,207 @@
+{% extends "base.html" %}
+
+{% block title %}Field Survey Management | Srivilliputhur Prototype{% endblock %}
+
+{% block content %}
+<div class="container mx-auto px-4 py-8">
+
+  <!-- Header -->
+  <div class="flex flex-col md:flex-row md:items-center justify-between gap-4 mb-6">
+    <div>
+      <div class="text-xs font-bold text-teal-700 uppercase tracking-wider mb-1 flex items-center gap-1.5">
+        <i class="fa-solid fa-clipboard-check"></i> Field Observation Framework
+      </div>
+      <h1 class="text-2xl md:text-3xl font-extrabold text-slate-900 tracking-tight">
+        Drainage Field Survey Protocol (25 Points)
+      </h1>
+      <p class="text-xs text-slate-500 mt-1 leading-relaxed">
+        Primary ground-truth survey points defined in the official project field survey template. Planned rows are explicitly displayed as <em>Planned / Field Data Required</em>.
+      </p>
+    </div>
+
+    <!-- Quick Status Counter -->
+    <div class="flex items-center gap-2 self-start md:self-auto">
+      <span class="badge-status-field-required px-3 py-1.5 text-xs font-bold">
+        <i class="fa-solid fa-hourglass-start mr-1"></i> 25 PLANNED POINTS
+      </span>
+    </div>
+  </div>
+
+  <!-- Mandatory Field Survey Guardrail Banner (Section 19) -->
+  <div class="p-4 bg-orange-50 border-l-4 border-orange-500 rounded-r-xl mb-8 shadow-sm">
+    <div class="flex items-start gap-3">
+      <i class="fa-solid fa-shield-halved text-orange-700 text-lg mt-0.5"></i>
+      <div>
+        <div class="text-xs font-bold text-orange-950 uppercase tracking-wider">Field Survey Protocol Rule</div>
+        <p class="text-xs text-orange-900 mt-1 leading-relaxed">
+          <strong>Planned/blank survey rows must NOT be treated as completed real observations.</strong>
+          When a survey record has not been physically visited with GPS, physical cross-section measurement, and photo evidence, it must be displayed strictly as <em>"Planned / Field Data Required"</em>.
+        </p>
+      </div>
+    </div>
+  </div>
+
+  <!-- 25 Field Survey Template Points Table -->
+  <div class="bg-white border border-slate-200 rounded-xl shadow-sm overflow-hidden mb-10">
+    <div class="overflow-x-auto">
+      <table class="w-full text-xs text-left">
+        <thead class="bg-slate-50 text-slate-700 font-semibold border-b border-slate-200 uppercase text-[11px]">
+          <tr>
+            <th class="px-3 py-3">Survey Point ID</th>
+            <th class="px-3 py-3">Planned Location / Street</th>
+            <th class="px-3 py-3">GPS WGS84</th>
+            <th class="px-3 py-3">Drain Type</th>
+            <th class="px-3 py-3">Plastic Level</th>
+            <th class="px-3 py-3">Blockage %</th>
+            <th class="px-3 py-3">Record Status</th>
+            <th class="px-3 py-3">Action</th>
+          </tr>
+        </thead>
+        <tbody class="divide-y divide-slate-100">
+          {% for s in surveys %}
+          <tr class="hover:bg-slate-50 transition" id="row-{{ s.survey_point_id }}">
+            <td class="px-3 py-2.5 font-bold text-slate-900 font-mono text-[11px] whitespace-nowrap">{{ s.survey_point_id }}</td>
+            <td class="px-3 py-2.5 font-semibold text-slate-900 max-w-xs">{{ s.street_or_location }}</td>
+            <td class="px-3 py-2.5 text-slate-500 font-mono text-[11px]">
+              {% if s.latitude_wgs84 and s.longitude_wgs84 %}
+                {{ s.latitude_wgs84 }}, {{ s.longitude_wgs84 }}
+              {% else %}
+                <span class="text-slate-400 italic">Field Data Required</span>
+              {% endif %}
+            </td>
+            <td class="px-3 py-2.5 text-slate-600">
+              {{ s.drain_type if s.drain_type else 'Pending Inspection' }}
+            </td>
+            <td class="px-3 py-2.5">
+              {% if s.plastic_level %}
+                <span class="font-bold text-slate-800">{{ s.plastic_level }}</span>
+              {% else %}
+                <span class="text-slate-400 italic">Pending Inspection</span>
+              {% endif %}
+            </td>
+            <td class="px-3 py-2.5">
+              {% if s.blockage_percent %}
+                <span class="font-bold text-slate-800">{{ s.blockage_percent }}%</span>
+              {% else %}
+                <span class="text-slate-400 italic">Pending Inspection</span>
+              {% endif %}
+            </td>
+            <td class="px-3 py-2.5">
+              {% if s.record_status == 'VALIDATED' %}
+                <span class="badge-status-verified">VALIDATED</span>
+              {% elif s.record_status == 'COMPLETED' %}
+                <span class="badge-status-synthetic">COMPLETED</span>
+              {% else %}
+                <span class="badge-status-field-required">PLANNED / FIELD DATA REQUIRED</span>
+              {% endif %}
+            </td>
+            <td class="px-3 py-2.5">
+              <button onclick="openSurveyModal('{{ s.survey_point_id }}', '{{ s.street_or_location }}')" class="px-2.5 py-1 bg-slate-100 hover:bg-teal-50 text-teal-800 border border-slate-300 rounded font-semibold text-[11px] transition flex items-center gap-1">
+                <i class="fa-solid fa-pen-to-square text-[10px]"></i> Log Observation
+              </button>
+            </td>
+          </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <!-- Survey Modal for Logging Ground Truth -->
+  <div id="survey-modal" class="fixed inset-0 bg-slate-900/60 backdrop-blur-sm z-50 hidden flex items-center justify-center p-4">
+    <div class="bg-white rounded-xl shadow-2xl max-w-lg w-full p-6 border border-slate-200">
+      <div class="flex items-center justify-between border-b border-slate-100 pb-3 mb-4">
+        <div>
+          <h3 class="text-sm font-bold text-slate-900 uppercase tracking-wider">Log Field Observation (Prototype)</h3>
+          <p id="modal-point-title" class="text-xs text-teal-700 font-bold mt-0.5"></p>
+        </div>
+        <button onclick="closeSurveyModal()" class="text-slate-400 hover:text-slate-700 text-lg">&times;</button>
+      </div>
+
+      <form id="survey-form" class="space-y-3 text-xs">
+        <input type="hidden" id="modal-point-id">
+        
+        <div>
+          <label class="block font-semibold text-slate-700 mb-1">Plastic Observation Level (Rubric)</label>
+          <select id="modal-plastic" class="w-full bg-white border border-slate-300 rounded px-2.5 py-1.5 text-xs">
+            <option value="NONE">NONE - Clean channel</option>
+            <option value="LOW" selected>LOW - Isolated items (&lt;25%)</option>
+            <option value="MEDIUM">MEDIUM - Noticeable accumulation (25–50%)</option>
+            <option value="HIGH">HIGH - Extensive choking (&gt;50%)</option>
+          </select>
+        </div>
+
+        <div>
+          <label class="block font-semibold text-slate-700 mb-1">Visual Blockage Estimate (%)</label>
+          <input type="number" id="modal-blockage" value="20" min="0" max="100" class="w-full bg-white border border-slate-300 rounded px-2.5 py-1.5 text-xs">
+        </div>
+
+        <div>
+          <label class="block font-semibold text-slate-700 mb-1">Observation Notes / Landmarks</label>
+          <textarea id="modal-notes" rows="2" placeholder="Describe physical drain geometry, silt height, or flow rate..." class="w-full bg-white border border-slate-300 rounded px-2.5 py-1.5 text-xs"></textarea>
+        </div>
+
+        <div>
+          <label class="block font-semibold text-slate-700 mb-1">Updated Record Status</label>
+          <select id="modal-status" class="w-full bg-white border border-slate-300 rounded px-2.5 py-1.5 text-xs">
+            <option value="COMPLETED">COMPLETED (Field inspection finished)</option>
+            <option value="VALIDATED">VALIDATED (Verified by Chief Surveyor)</option>
+            <option value="PLANNED">PLANNED (Revert to planned state)</option>
+          </select>
+        </div>
+
+        <div class="pt-3 border-t border-slate-100 flex justify-end gap-2">
+          <button type="button" onclick="closeSurveyModal()" class="px-3 py-1.5 bg-slate-100 hover:bg-slate-200 text-slate-700 rounded font-semibold text-xs">Cancel</button>
+          <button type="submit" class="px-4 py-1.5 bg-teal-700 hover:bg-teal-600 text-white rounded font-bold text-xs shadow-sm">Save Observation</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+</div>
+{% endblock %}
+
+{% block extra_scripts %}
+<script>
+  function openSurveyModal(pointId, location) {
+    document.getElementById('modal-point-id').value = pointId;
+    document.getElementById('modal-point-title').innerText = `${pointId} — ${location}`;
+    document.getElementById('survey-modal').classList.remove('hidden');
+  }
+
+  function closeSurveyModal() {
+    document.getElementById('survey-modal').classList.add('hidden');
+  }
+
+  document.getElementById('survey-form')?.addEventListener('submit', async function(e) {
+    e.preventDefault();
+    const pointId = document.getElementById('modal-point-id').value;
+    const plastic = document.getElementById('modal-plastic').value;
+    const blockage = document.getElementById('modal-blockage').value;
+    const notes = document.getElementById('modal-notes').value;
+    const status = document.getElementById('modal-status').value;
+
+    try {
+      const res = await fetch('/api/field-surveys', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          survey_point_id: pointId,
+          plastic_level: plastic,
+          blockage_percent: blockage,
+          notes: notes,
+          record_status: status
+        })
+      });
+      const data = await res.json();
+      if (data.status === 'success') {
+        alert(`Record ${pointId} updated to ${status}`);
+        location.reload();
+      }
+    } catch(err) {
+      console.error(err);
+      alert('Update failed');
+    }
+  });
+</script>
+{% endblock %}

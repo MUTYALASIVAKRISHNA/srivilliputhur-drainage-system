@@ -1,0 +1,139 @@
+{% extends "base.html" %}
+
+{% block title %}Plastic Waste Analysis | Srivilliputhur Prototype{% endblock %}
+
+{% block content %}
+<div class="container mx-auto px-4 py-8">
+
+  <!-- Header -->
+  <div class="max-w-4xl mb-8">
+    <div class="text-xs font-bold text-teal-700 uppercase tracking-wider mb-1 flex items-center gap-1.5">
+      <i class="fa-solid fa-bottle-water"></i> Solid Waste & Drainage Causal Factor
+    </div>
+    <h1 class="text-2xl md:text-3xl font-extrabold text-slate-900 tracking-tight">
+      Plastic Waste & Solid Waste Inflow Analysis
+    </h1>
+    <p class="text-xs text-slate-500 mt-1 leading-relaxed">
+      Srivilliputhur Municipality — Documented evidence of plastic accumulation, municipal fines, and Resource Recovery Centers (RRC).
+    </p>
+  </div>
+
+  <!-- Mandatory Rule Notice Banner (Section 16) -->
+  <div class="p-4 bg-emerald-50 border-l-4 border-emerald-600 rounded-r-xl mb-8 shadow-sm">
+    <div class="flex items-start gap-3">
+      <i class="fa-solid fa-recycle text-emerald-700 text-lg mt-0.5"></i>
+      <div>
+        <div class="text-xs font-bold text-emerald-950 uppercase tracking-wider">Plastic Quantification Rule</div>
+        <p class="text-xs text-emerald-900 mt-1 leading-relaxed">
+          <strong>Existing public sources do NOT provide reliable drain-by-drain plastic quantities.</strong>
+          Therefore, this system does not invent fake kilogram masses for individual municipal drains. Missing quantities remain labeled <em>"Not Available"</em> until verified primary field surveys are completed.
+        </p>
+      </div>
+    </div>
+  </div>
+
+  <!-- Municipal Solid Waste Baseline Cards -->
+  <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-10">
+    <div class="bg-white border border-slate-200 rounded-xl p-5 shadow-sm">
+      <div class="text-xs font-semibold text-slate-500 uppercase tracking-wider">Daily Solid Waste Generation</div>
+      <div class="text-3xl font-black text-slate-900 mt-2">31 <span class="text-sm font-semibold text-slate-600">TPD</span></div>
+      <div class="text-[11px] text-teal-700 font-semibold mt-1">Tonnes Per Day (SFD Lite Report)</div>
+    </div>
+
+    <div class="bg-white border border-slate-200 rounded-xl p-5 shadow-sm">
+      <div class="text-xs font-semibold text-slate-500 uppercase tracking-wider">Open Storm Drain Network</div>
+      <div class="text-3xl font-black text-slate-900 mt-2">101.1 <span class="text-sm font-semibold text-slate-600">km</span></div>
+      <div class="text-[11px] text-slate-600 mt-1">92.4 km surfaced + 8.7 km unlined roads</div>
+    </div>
+
+    <div class="bg-white border border-slate-200 rounded-xl p-5 shadow-sm">
+      <div class="text-xs font-semibold text-slate-500 uppercase tracking-wider">Resource Recovery Centers</div>
+      <div class="text-3xl font-black text-slate-900 mt-2">Active <span class="text-sm font-semibold text-slate-600">RRC</span></div>
+      <div class="text-[11px] text-emerald-700 font-semibold mt-1">Recyclable dry plastic/rubber collected</div>
+    </div>
+  </div>
+
+  <!-- Verified Public Plastic Records (Sheet 1F) -->
+  <div class="bg-white border border-slate-200 rounded-xl p-6 shadow-sm mb-10">
+    <div class="flex items-center justify-between mb-4">
+      <h2 class="text-sm font-bold text-slate-900 uppercase tracking-wider flex items-center gap-2">
+        <i class="fa-solid fa-file-shield text-teal-600"></i> Verified Public & Historical Plastic Information (Sheet 1F)
+      </h2>
+      <span class="badge-status-verified">VERIFIED_PUBLIC & HISTORICAL</span>
+    </div>
+
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-5">
+      {% for p in plastic_records %}
+      <div class="p-4 bg-slate-50 border border-slate-200 rounded-lg flex flex-col justify-between">
+        <div>
+          <div class="flex items-center justify-between mb-2">
+            <span class="text-[11px] font-bold text-slate-800">
+              {% if p.ward_no != 'NOT_AVAILABLE' %}Ward {{ p.ward_no }}{% else %}Unspecified Wards{% endif %}
+            </span>
+            <span class="text-[10px] font-mono text-slate-500">{{ p.date_year }}</span>
+          </div>
+          <div class="font-bold text-slate-900 text-xs mb-1.5">{{ p.waste_plastic_issue }}</div>
+          <p class="text-xs text-slate-600 leading-relaxed mb-3">{{ p.evidence_description }}</p>
+        </div>
+        <div class="pt-2 border-t border-slate-200 flex items-center justify-between text-[10px]">
+          <span class="font-semibold text-slate-600">{{ p.source }}</span>
+          <span class="badge-status-historical">{{ p.data_source_type }}</span>
+        </div>
+      </div>
+      {% endfor %}
+    </div>
+  </div>
+
+  <!-- Official Field Survey Scoring Rubric for Plastic Observation -->
+  <div class="bg-white border border-slate-200 rounded-xl p-6 shadow-sm">
+    <div class="flex items-center justify-between mb-3">
+      <h2 class="text-sm font-bold text-slate-900 uppercase tracking-wider">
+        Standardized Field Observation Scoring Rubric
+      </h2>
+      <span class="badge-status-field-required">FIELD_RUBRIC</span>
+    </div>
+    <p class="text-xs text-slate-500 mb-4">
+      Per the project survey template, plastic levels are classified visually by field surveyors across 4 rigorous tiers:
+    </p>
+
+    <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-4 text-xs">
+      <div class="p-3.5 bg-slate-50 border border-slate-200 rounded-lg">
+        <div class="font-bold text-slate-900 flex items-center gap-1.5 mb-1">
+          <span class="w-3 h-3 rounded-full bg-slate-400"></span> Score 0 — NONE
+        </div>
+        <div class="text-slate-600 text-[11px] leading-relaxed">
+          No visible plastic items or synthetic packaging observed in the channel segment.
+        </div>
+      </div>
+
+      <div class="p-3.5 bg-emerald-50 border border-emerald-200 rounded-lg">
+        <div class="font-bold text-emerald-900 flex items-center gap-1.5 mb-1">
+          <span class="w-3 h-3 rounded-full bg-emerald-500"></span> Score 1 — LOW
+        </div>
+        <div class="text-emerald-800 text-[11px] leading-relaxed">
+          Isolated items; less than 25% of visible drain channel cross-section/area affected.
+        </div>
+      </div>
+
+      <div class="p-3.5 bg-amber-50 border border-amber-200 rounded-lg">
+        <div class="font-bold text-amber-900 flex items-center gap-1.5 mb-1">
+          <span class="w-3 h-3 rounded-full bg-amber-500"></span> Score 2 — MEDIUM
+        </div>
+        <div class="text-amber-800 text-[11px] leading-relaxed">
+          Noticeable accumulation; between 25% and 50% of channel surface obstructed.
+        </div>
+      </div>
+
+      <div class="p-3.5 bg-rose-50 border border-rose-200 rounded-lg">
+        <div class="font-bold text-rose-900 flex items-center gap-1.5 mb-1">
+          <span class="w-3 h-3 rounded-full bg-rose-500"></span> Score 3 — HIGH
+        </div>
+        <div class="text-rose-800 text-[11px] leading-relaxed">
+          Extensive accumulation; greater than 50% of drain choked by single-use plastics and packaging.
+        </div>
+      </div>
+    </div>
+  </div>
+
+</div>
+{% endblock %}

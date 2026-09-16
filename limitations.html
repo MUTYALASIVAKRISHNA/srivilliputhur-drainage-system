@@ -1,0 +1,117 @@
+{% extends "base.html" %}
+
+{% block title %}Research & Data Limitations | Srivilliputhur Prototype{% endblock %}
+
+{% block content %}
+<div class="container mx-auto px-4 py-8">
+
+  <!-- Header -->
+  <div class="max-w-4xl mb-8">
+    <div class="text-xs font-bold text-teal-700 uppercase tracking-wider mb-1 flex items-center gap-1.5">
+      <i class="fa-solid fa-triangle-exclamation"></i> Academic Transparency
+    </div>
+    <h1 class="text-2xl md:text-3xl font-extrabold text-slate-900 tracking-tight">
+      Data Limitations & Research Boundary Conditions
+    </h1>
+    <p class="text-xs text-slate-500 mt-1 leading-relaxed">
+      In accordance with engineering research integrity standards, the following 9 boundary constraints are explicitly documented. These reflect expected real-world data collection realities, not software defects.
+    </p>
+  </div>
+
+  <!-- 9 Research Limitations Grid -->
+  <div class="space-y-4 max-w-4xl mb-10">
+    
+    <div class="bg-white border border-slate-200 rounded-xl p-5 shadow-sm flex items-start gap-4">
+      <div class="w-8 h-8 rounded-lg bg-slate-100 text-slate-700 flex items-center justify-center font-bold text-sm flex-shrink-0 mt-0.5">1</div>
+      <div>
+        <h3 class="text-xs font-bold text-slate-900 uppercase tracking-wider mb-1">Incomplete 33-Ward Municipal Drain GIS Inventory</h3>
+        <p class="text-xs text-slate-600 leading-relaxed">
+          No official, downloadable GIS shapefile or complete 33-ward physical drain asset registry exists in open public repositories. Only one specific public tender record (Ward 32, Bharathi Nagar 3rd St Road, 120m) and municipal aggregates (101.1 km total network) could be independently verified.
+        </p>
+      </div>
+    </div>
+
+    <div class="bg-white border border-slate-200 rounded-xl p-5 shadow-sm flex items-start gap-4">
+      <div class="w-8 h-8 rounded-lg bg-slate-100 text-slate-700 flex items-center justify-center font-bold text-sm flex-shrink-0 mt-0.5">2</div>
+      <div>
+        <h3 class="text-xs font-bold text-slate-900 uppercase tracking-wider mb-1">Absence of Drain-Level Sensor Blockage Observations</h3>
+        <p class="text-xs text-slate-600 leading-relaxed">
+          Srivilliputhur Municipality does not currently operate IoT water-level gauges or ultrasonic blockage telemetry inside roadside drains. Blockage percentages in real drains require primary visual inspection.
+        </p>
+      </div>
+    </div>
+
+    <div class="bg-white border border-slate-200 rounded-xl p-5 shadow-sm flex items-start gap-4">
+      <div class="w-8 h-8 rounded-lg bg-slate-100 text-slate-700 flex items-center justify-center font-bold text-sm flex-shrink-0 mt-0.5">3</div>
+      <div>
+        <h3 class="text-xs font-bold text-slate-900 uppercase tracking-wider mb-1">Unquantified Drain-by-Drain Plastic Accumulation</h3>
+        <p class="text-xs text-slate-600 leading-relaxed">
+          While solid waste generation is documented at the municipal aggregate scale (31 TPD) and anti-littering enforcement fines are recorded in Ward 19, empirical kilogram masses of plastic inside individual open channels have not been measured.
+        </p>
+      </div>
+    </div>
+
+    <div class="bg-white border border-slate-200 rounded-xl p-5 shadow-sm flex items-start gap-4">
+      <div class="w-8 h-8 rounded-lg bg-slate-100 text-slate-700 flex items-center justify-center font-bold text-sm flex-shrink-0 mt-0.5">4</div>
+      <div>
+        <h3 class="text-xs font-bold text-slate-900 uppercase tracking-wider mb-1">Inaccessible Public Maintenance Logs</h3>
+        <p class="text-xs text-slate-600 leading-relaxed">
+          Historical de-silting schedules and daily municipal sanitation truck dispatches are maintained as internal local body paper records and are not published online. The system's maintenance module operates as a prototype workflow.
+        </p>
+      </div>
+    </div>
+
+    <div class="bg-white border border-slate-200 rounded-xl p-5 shadow-sm flex items-start gap-4">
+      <div class="w-8 h-8 rounded-lg bg-slate-100 text-slate-700 flex items-center justify-center font-bold text-sm flex-shrink-0 mt-0.5">5</div>
+      <div>
+        <h3 class="text-xs font-bold text-slate-900 uppercase tracking-wider mb-1">Unverified Local Station Daily Rainfall Time-Series</h3>
+        <p class="text-xs text-slate-600 leading-relaxed">
+          National portals (NWDP/IMD) provide Virudhunagar District daily rainfall CSV datasets, but a complete, continuous multi-year daily rain gauge series specific to Srivilliputhur town station was not publicly accessible.
+        </p>
+      </div>
+    </div>
+
+    <div class="bg-white border border-slate-200 rounded-xl p-5 shadow-sm flex items-start gap-4">
+      <div class="w-8 h-8 rounded-lg bg-slate-100 text-slate-700 flex items-center justify-center font-bold text-sm flex-shrink-0 mt-0.5">6</div>
+      <div>
+        <h3 class="text-xs font-bold text-slate-900 uppercase tracking-wider mb-1">Incomplete Ward GIS Boundaries & Street Crosswalk</h3>
+        <p class="text-xs text-slate-600 leading-relaxed">
+          Although a visual municipal ward map exists, vector GIS polygon shapefiles defining exact boundary coordinates for all 33 wards and the complete 143-street crosswalk could not be verified in open government portals.
+        </p>
+      </div>
+    </div>
+
+    <div class="bg-white border border-slate-200 rounded-xl p-5 shadow-sm flex items-start gap-4">
+      <div class="w-8 h-8 rounded-lg bg-slate-100 text-slate-700 flex items-center justify-center font-bold text-sm flex-shrink-0 mt-0.5">7</div>
+      <div>
+        <h3 class="text-xs font-bold text-slate-900 uppercase tracking-wider mb-1">Non-Drainage Causes in Historical Flood Events</h3>
+        <p class="text-xs text-slate-600 leading-relaxed">
+          Historical waterlogging incidents cannot automatically be assumed to be caused by drain blockage. Several documented events (e.g. 2021 & 2023) were driven by irrigation tank (kanmai) surplus overflows and Western Ghats cloudburst torrents rather than municipal channel clogging.
+        </p>
+      </div>
+    </div>
+
+    <div class="bg-white border border-slate-200 rounded-xl p-5 shadow-sm flex items-start gap-4">
+      <div class="w-8 h-8 rounded-lg bg-slate-100 text-slate-700 flex items-center justify-center font-bold text-sm flex-shrink-0 mt-0.5">8</div>
+      <div>
+        <h3 class="text-xs font-bold text-slate-900 uppercase tracking-wider mb-1">Synthetic Machine Learning Dataset (50 Rows)</h3>
+        <p class="text-xs text-slate-600 leading-relaxed">
+          The ML classification models are trained on a 50-row synthetic dataset created solely for academic demonstration. The dataset contains 32 LOW and 18 MEDIUM instances with zero HIGH examples. Consequently, the model cannot legitimately classify HIGH risk without on-site data.
+        </p>
+      </div>
+    </div>
+
+    <div class="bg-white border border-slate-200 rounded-xl p-5 shadow-sm flex items-start gap-4">
+      <div class="w-8 h-8 rounded-lg bg-slate-100 text-slate-700 flex items-center justify-center font-bold text-sm flex-shrink-0 mt-0.5">9</div>
+      <div>
+        <h3 class="text-xs font-bold text-slate-900 uppercase tracking-wider mb-1">Prototype Status — Not for Live Municipal Deployment</h3>
+        <p class="text-xs text-slate-600 leading-relaxed">
+          This system is an academic engineering capstone prototype. It has not undergone formal civil engineering calibration, hydrodynamic modeling (SWMM), or municipal regulatory validation.
+        </p>
+      </div>
+    </div>
+
+  </div>
+
+</div>
+{% endblock %}

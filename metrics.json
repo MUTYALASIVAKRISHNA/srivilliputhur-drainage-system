@@ -1,0 +1,231 @@
+{
+  "dataset_summary": {
+    "total_records": 50,
+    "class_distribution": {
+      "LOW": 32,
+      "MEDIUM": 18,
+      "HIGH": 0
+    },
+    "disclaimer": "Synthetic Prototype Dataset (50 rows). Contains LOW and MEDIUM classes only; zero HIGH classes."
+  },
+  "leakage_analysis": {
+    "blockage_correlation": 0.8508,
+    "plastic_correlation": 0.2387,
+    "rainfall_7day_correlation": 0.0882,
+    "rainfall_30day_correlation": 0.139,
+    "blockage_by_class": {
+      "LOW": {
+        "min": 5.2,
+        "max": 49.5,
+        "mean": 24.893749999999997,
+        "std": 12.292456052654881
+      },
+      "MEDIUM": {
+        "min": 46.4,
+        "max": 81.6,
+        "mean": 65.19999999999999,
+        "std": 12.020815280171307
+      }
+    },
+    "leakage_explanation": "In the synthetic dataset, Blockage_Percent has an overwhelming 0.8508 Pearson correlation with Overflow_Risk_Label. LOW blockage ranges from 5.2% to 49.5% (mean: 24.89%), while MEDIUM ranges from 46.4% to 81.6% (mean: 65.20%). Including Blockage_Percent causes target leakage because the synthetic label was generated directly using blockage thresholds. The Causal Pipeline appropriately excludes Blockage_Percent to model upstream hydrological and waste drivers."
+  },
+  "models": {
+    "causal_pipeline": {
+      "description": "Leakage-Free Causal Pre-Blockage Pipeline (Excludes Blockage_Percent)",
+      "features_used": [
+        "rainfall_mm_7day",
+        "rainfall_mm_30day",
+        "plastic_accumulation_score",
+        "drain_width_m",
+        "drain_depth_m",
+        "days_since_cleaning",
+        "previous_overflow_count_1yr",
+        "water_level_cm",
+        "drain_type"
+      ],
+      "excluded_features": [
+        "blockage_percent (target leakage)",
+        "ward_no (spatial proxy)",
+        "latitude",
+        "longitude"
+      ],
+      "logistic_regression": {
+        "cv_5fold_accuracy": 0.54,
+        "cv_5fold_f1": 0.1714,
+        "test_accuracy": 0.7,
+        "test_precision": 0.6667,
+        "test_recall": 0.5,
+        "test_f1": 0.5714,
+        "confusion_matrix": [
+          [
+            5,
+            1
+          ],
+          [
+            2,
+            2
+          ]
+        ]
+      },
+      "random_forest": {
+        "cv_5fold_accuracy": 0.58,
+        "cv_5fold_f1": 0.1371,
+        "test_accuracy": 0.6,
+        "test_precision": 0.0,
+        "test_recall": 0.0,
+        "test_f1": 0.0,
+        "confusion_matrix": [
+          [
+            6,
+            0
+          ],
+          [
+            4,
+            0
+          ]
+        ],
+        "feature_importance": [
+          {
+            "feature": "water_level_cm",
+            "importance": 0.2229
+          },
+          {
+            "feature": "drain_width_m",
+            "importance": 0.1616
+          },
+          {
+            "feature": "drain_depth_m",
+            "importance": 0.1184
+          },
+          {
+            "feature": "rainfall_mm_30day",
+            "importance": 0.1116
+          },
+          {
+            "feature": "days_since_cleaning",
+            "importance": 0.1071
+          },
+          {
+            "feature": "rainfall_mm_7day",
+            "importance": 0.0895
+          },
+          {
+            "feature": "plastic_accumulation_score",
+            "importance": 0.0702
+          },
+          {
+            "feature": "previous_overflow_count_1yr",
+            "importance": 0.0582
+          },
+          {
+            "feature": "drain_type_COVERED",
+            "importance": 0.0325
+          },
+          {
+            "feature": "drain_type_OPEN",
+            "importance": 0.0174
+          },
+          {
+            "feature": "drain_type_PARTIALLY_COVERED",
+            "importance": 0.0106
+          }
+        ]
+      }
+    },
+    "diagnostic_leakage_pipeline": {
+      "description": "Diagnostic Baseline Pipeline (Includes Blockage_Percent)",
+      "features_used": [
+        "rainfall_mm_7day",
+        "rainfall_mm_30day",
+        "plastic_accumulation_score",
+        "drain_width_m",
+        "drain_depth_m",
+        "days_since_cleaning",
+        "previous_overflow_count_1yr",
+        "water_level_cm",
+        "blockage_percent",
+        "drain_type"
+      ],
+      "logistic_regression": {
+        "cv_5fold_accuracy": 0.9,
+        "cv_5fold_f1": 0.8529,
+        "test_accuracy": 1.0,
+        "confusion_matrix": [
+          [
+            6,
+            0
+          ],
+          [
+            0,
+            4
+          ]
+        ]
+      },
+      "random_forest": {
+        "cv_5fold_accuracy": 0.9,
+        "cv_5fold_f1": 0.8425,
+        "test_accuracy": 1.0,
+        "confusion_matrix": [
+          [
+            6,
+            0
+          ],
+          [
+            0,
+            4
+          ]
+        ],
+        "feature_importance": [
+          {
+            "feature": "blockage_percent",
+            "importance": 0.4996
+          },
+          {
+            "feature": "water_level_cm",
+            "importance": 0.0951
+          },
+          {
+            "feature": "rainfall_mm_30day",
+            "importance": 0.0716
+          },
+          {
+            "feature": "days_since_cleaning",
+            "importance": 0.0603
+          },
+          {
+            "feature": "drain_width_m",
+            "importance": 0.0582
+          },
+          {
+            "feature": "rainfall_mm_7day",
+            "importance": 0.0548
+          },
+          {
+            "feature": "drain_depth_m",
+            "importance": 0.0519
+          },
+          {
+            "feature": "plastic_accumulation_score",
+            "importance": 0.0463
+          },
+          {
+            "feature": "previous_overflow_count_1yr",
+            "importance": 0.0329
+          },
+          {
+            "feature": "drain_type_OPEN",
+            "importance": 0.0147
+          },
+          {
+            "feature": "drain_type_COVERED",
+            "importance": 0.0135
+          },
+          {
+            "feature": "drain_type_PARTIALLY_COVERED",
+            "importance": 0.001
+          }
+        ]
+      }
+    }
+  }
+}

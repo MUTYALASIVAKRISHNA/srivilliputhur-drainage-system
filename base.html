@@ -1,0 +1,225 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>{% block title %}{{ project_title }}{% endblock %} | Srivilliputhur Municipality</title>
+  
+  <!-- Tailwind CSS CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            brand: {
+              50: '#f0fdfa',
+              100: '#ccfbf1',
+              500: '#14b8a6',
+              600: '#0d9488',
+              700: '#0f766e',
+              800: '#115e59',
+              900: '#134e4a',
+              950: '#042f2e',
+            },
+            muni: {
+              primary: '#00897b',
+              dark: '#0c2340',
+              accent: '#0284c7'
+            }
+          }
+        }
+      }
+    }
+  </script>
+  
+  <!-- FontAwesome & Icons -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+  
+  <!-- Custom CSS -->
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/custom.css') }}">
+
+  <!-- Leaflet CSS for Maps -->
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY=" crossorigin="" />
+  
+  <!-- Chart.js -->
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+  {% block extra_head %}{% endblock %}
+</head>
+<body class="bg-slate-50 text-slate-800 min-h-screen flex flex-col antialiased">
+
+  <!-- Top Academic Prototype Sticky Alert Bar -->
+  <div class="bg-gradient-to-r from-amber-500 via-amber-400 to-amber-500 text-slate-950 px-4 py-1.5 text-xs font-semibold shadow-sm border-b border-amber-500/30">
+    <div class="container mx-auto flex items-center gap-2">
+      <i class="fa-solid fa-triangle-exclamation text-slate-950"></i>
+      <span><strong>ACADEMIC PROTOTYPE NOTICE:</strong> Srivilliputhur Municipality, Tamil Nadu. College Engineering Capstone — Uses public records and a 50-row synthetic dataset.</span>
+    </div>
+  </div>
+
+  <!-- Main Clean White Navigation Header -->
+  <header class="bg-white/95 backdrop-blur-md text-slate-800 sticky top-0 z-50 border-b border-slate-200/80 shadow-xs">
+    <div class="container mx-auto px-4 py-3">
+      <div class="flex items-center justify-between gap-4">
+        
+        <!-- Logo & Title -->
+        <a href="{{ url_for('index') }}" class="flex items-center gap-3 group flex-shrink-0">
+          <!-- Fluid Waterdrop Logo -->
+          <div class="w-10 h-10 rounded-full bg-gradient-to-tr from-sky-600 to-teal-400 flex items-center justify-center text-white text-lg shadow-sm group-hover:scale-105 transition">
+            <i class="fa-solid fa-water"></i>
+          </div>
+          <div>
+            <div class="text-base font-extrabold text-slate-900 leading-tight tracking-tight flex items-center gap-1.5">
+              <span>Srivilliputhur</span>
+              <span class="text-teal-700 font-black">Drainage Risk System</span>
+            </div>
+            <div class="text-[10px] text-slate-500 font-medium tracking-tight">AI-Based Plastic Waste & Drainage Overflow Risk Prediction</div>
+          </div>
+        </a>
+
+        <!-- Desktop Navigation Actions -->
+        <nav class="hidden xl:flex items-center gap-5 text-xs font-semibold text-slate-600">
+          <a href="{{ url_for('index') }}" class="py-1.5 hover:text-teal-700 transition {% if request.endpoint == 'index' %}text-teal-700 border-b-2 border-teal-600 font-bold{% endif %}">Home</a>
+          <a href="{{ url_for('dashboard') }}" class="py-1.5 hover:text-teal-700 transition {% if request.endpoint == 'dashboard' %}text-teal-700 border-b-2 border-teal-600 font-bold{% endif %}">Dashboard</a>
+          <a href="{{ url_for('prediction') }}" class="py-1.5 hover:text-teal-700 transition {% if request.endpoint == 'prediction' %}text-teal-700 border-b-2 border-teal-600 font-bold{% endif %}">AI Prediction</a>
+          <a href="{{ url_for('risk_map') }}" class="py-1.5 hover:text-teal-700 transition {% if request.endpoint == 'risk_map' %}text-teal-700 border-b-2 border-teal-600 font-bold{% endif %}">Risk Map</a>
+          <a href="{{ url_for('drains') }}" class="py-1.5 hover:text-teal-700 transition {% if request.endpoint == 'drains' %}text-teal-700 border-b-2 border-teal-600 font-bold{% endif %}">Drains</a>
+          <a href="{{ url_for('rainfall') }}" class="py-1.5 hover:text-teal-700 transition {% if request.endpoint == 'rainfall' %}text-teal-700 border-b-2 border-teal-600 font-bold{% endif %}">Rainfall</a>
+          <a href="{{ url_for('incidents') }}" class="py-1.5 hover:text-teal-700 transition {% if request.endpoint == 'incidents' %}text-teal-700 border-b-2 border-teal-600 font-bold{% endif %}">Incidents</a>
+          <a href="{{ url_for('plastic_waste') }}" class="py-1.5 hover:text-teal-700 transition {% if request.endpoint == 'plastic_waste' %}text-teal-700 border-b-2 border-teal-600 font-bold{% endif %}">Plastic Waste</a>
+          <a href="{{ url_for('report') }}" class="py-1.5 hover:text-teal-700 transition {% if request.endpoint == 'report' %}text-teal-700 border-b-2 border-teal-600 font-bold{% endif %}">Citizen Report</a>
+          
+          <div class="relative group py-1.5">
+            <button class="hover:text-teal-700 transition flex items-center gap-1 font-semibold">
+              <span>More</span> <i class="fa-solid fa-chevron-down text-[9px]"></i>
+            </button>
+            <div class="absolute right-0 mt-2 w-52 bg-white border border-slate-200 rounded-xl shadow-xl py-2 hidden group-hover:block z-50">
+              <a href="{{ url_for('field_survey') }}" class="block px-4 py-2 text-xs text-slate-700 hover:bg-slate-50 hover:text-teal-700 font-medium">Field Survey (25 Pts)</a>
+              <a href="{{ url_for('maintenance') }}" class="block px-4 py-2 text-xs text-slate-700 hover:bg-slate-50 hover:text-teal-700 font-medium">Maintenance Tracking</a>
+              <a href="{{ url_for('analytics') }}" class="block px-4 py-2 text-xs text-slate-700 hover:bg-slate-50 hover:text-teal-700 font-medium">Reports & Analytics</a>
+              <a href="{{ url_for('sources') }}" class="block px-4 py-2 text-xs text-slate-700 hover:bg-slate-50 hover:text-teal-700 font-medium">Data Sources & URLs</a>
+              <a href="{{ url_for('methodology') }}" class="block px-4 py-2 text-xs text-slate-700 hover:bg-slate-50 hover:text-teal-700 font-medium">11-Phase Methodology</a>
+              <a href="{{ url_for('limitations') }}" class="block px-4 py-2 text-xs text-slate-700 hover:bg-slate-50 hover:text-teal-700 font-medium">Research Limitations</a>
+              <div class="border-t border-slate-100 my-1"></div>
+              <a href="{{ url_for('admin') }}" class="block px-4 py-2 text-xs text-teal-800 hover:bg-teal-50 font-bold">
+                <i class="fa-solid fa-shield-halved mr-1.5 text-teal-600"></i> Admin Dashboard
+              </a>
+            </div>
+          </div>
+        </nav>
+
+        <!-- Right Action Button -->
+        <div class="flex items-center gap-3">
+          <a href="{{ url_for('report') }}" class="px-4 py-2.5 rounded-lg bg-teal-700 hover:bg-teal-800 text-white font-bold text-xs shadow-sm transition flex items-center gap-1.5">
+            <i class="fa-solid fa-bullhorn text-[11px]"></i>
+            <span>Report Issue</span>
+          </a>
+
+          <!-- Mobile Toggle -->
+          <div class="xl:hidden flex items-center">
+            <button id="mobile-menu-btn" class="p-2 rounded-lg text-slate-700 hover:bg-slate-100">
+              <i class="fa-solid fa-bars text-lg"></i>
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Mobile Dropdown Menu -->
+      <div id="mobile-menu" class="hidden xl:hidden mt-3 pt-3 border-t border-slate-200 flex flex-col gap-1 text-xs font-semibold">
+        <a href="{{ url_for('index') }}" class="px-3 py-2 rounded hover:bg-slate-100">Home</a>
+        <a href="{{ url_for('dashboard') }}" class="px-3 py-2 rounded hover:bg-slate-100">Dashboard</a>
+        <a href="{{ url_for('prediction') }}" class="px-3 py-2 rounded hover:bg-slate-100">AI Prediction</a>
+        <a href="{{ url_for('risk_map') }}" class="px-3 py-2 rounded hover:bg-slate-100">Risk Map</a>
+        <a href="{{ url_for('drains') }}" class="px-3 py-2 rounded hover:bg-slate-100">Drains Explorer</a>
+        <a href="{{ url_for('rainfall') }}" class="px-3 py-2 rounded hover:bg-slate-100">Rainfall</a>
+        <a href="{{ url_for('incidents') }}" class="px-3 py-2 rounded hover:bg-slate-100">Incidents</a>
+        <a href="{{ url_for('plastic_waste') }}" class="px-3 py-2 rounded hover:bg-slate-100">Plastic Waste</a>
+        <a href="{{ url_for('report') }}" class="px-3 py-2 rounded bg-teal-50 text-teal-800 font-bold">Report Drainage Issue</a>
+        <a href="{{ url_for('field_survey') }}" class="px-3 py-2 rounded hover:bg-slate-100">Field Survey</a>
+        <a href="{{ url_for('maintenance') }}" class="px-3 py-2 rounded hover:bg-slate-100">Maintenance</a>
+        <a href="{{ url_for('analytics') }}" class="px-3 py-2 rounded hover:bg-slate-100">Analytics</a>
+        <a href="{{ url_for('sources') }}" class="px-3 py-2 rounded hover:bg-slate-100">Sources</a>
+        <a href="{{ url_for('methodology') }}" class="px-3 py-2 rounded hover:bg-slate-100">Methodology</a>
+        <a href="{{ url_for('limitations') }}" class="px-3 py-2 rounded hover:bg-slate-100">Limitations</a>
+        <a href="{{ url_for('admin') }}" class="px-3 py-2 rounded text-teal-800 font-bold hover:bg-slate-100">Admin Console</a>
+      </div>
+    </div>
+  </header>
+
+  <!-- Flash Messages -->
+  {% with messages = get_flashed_messages(with_categories=true) %}
+    {% if messages %}
+      <div class="container mx-auto px-4 mt-4">
+        {% for category, message in messages %}
+          <div class="p-4 rounded-xl text-xs font-medium border flex items-center justify-between {% if category == 'success' %}bg-emerald-50 text-emerald-800 border-emerald-200{% else %}bg-rose-50 text-rose-800 border-rose-200{% endif %}">
+            <div class="flex items-center gap-2">
+              <i class="fa-solid {% if category == 'success' %}fa-circle-check text-emerald-600{% else %}fa-circle-exclamation text-rose-600{% endif %}"></i>
+              <span>{{ message }}</span>
+            </div>
+            <button onclick="this.parentElement.remove()" class="text-slate-400 hover:text-slate-700">&times;</button>
+          </div>
+        {% endfor %}
+      </div>
+    {% endif %}
+  {% endwith %}
+
+  <!-- Main Body Content -->
+  <main class="flex-grow">
+    {% block content %}{% endblock %}
+  </main>
+
+  <!-- Clean Municipal Footer -->
+  <footer class="bg-white text-slate-600 text-xs py-10 border-t border-slate-200 mt-16">
+    <div class="container mx-auto px-4 grid grid-cols-1 md:grid-cols-4 gap-8">
+      <div class="md:col-span-2">
+        <div class="flex items-center gap-2 text-slate-900 font-bold text-sm mb-2">
+          <div class="w-6 h-6 rounded-full bg-teal-600 text-white flex items-center justify-center text-xs">
+            <i class="fa-solid fa-landmark"></i>
+          </div>
+          <span>Srivilliputhur Municipality Academic Prototype</span>
+        </div>
+        <p class="leading-relaxed max-w-lg mb-3 text-slate-500 text-xs">
+          Academic Engineering demonstration exploring the causal chain: <strong>Plastic Waste &rarr; Rainfall &rarr; Drain Inflow &rarr; Blockage &rarr; Water Accumulation &rarr; Drainage Overflow</strong>.
+        </p>
+        <div class="text-[11px] text-amber-900 bg-amber-50/80 p-2.5 rounded-lg border border-amber-200 max-w-lg">
+          <i class="fa-solid fa-shield-halved text-amber-700 mr-1"></i> Data Rule: Real public records and synthetic ML data are strictly segregated. Missing fields are explicitly marked <em>Not Available</em>.
+        </div>
+      </div>
+      <div>
+        <h4 class="text-slate-900 font-bold text-xs uppercase tracking-wider mb-2.5">Key Modules</h4>
+        <ul class="space-y-2 text-xs">
+          <li><a href="{{ url_for('dashboard') }}" class="hover:text-teal-700 transition">Municipality Dashboard</a></li>
+          <li><a href="{{ url_for('prediction') }}" class="hover:text-teal-700 transition">AI Drainage Risk Prediction</a></li>
+          <li><a href="{{ url_for('risk_map') }}" class="hover:text-teal-700 transition">Interactive GIS Risk Map</a></li>
+          <li><a href="{{ url_for('drains') }}" class="hover:text-teal-700 transition">Drainage Explorer</a></li>
+          <li><a href="{{ url_for('report') }}" class="hover:text-teal-700 transition">Citizen Complaint Portal</a></li>
+        </ul>
+      </div>
+      <div>
+        <h4 class="text-slate-900 font-bold text-xs uppercase tracking-wider mb-2.5">Academic Provenance</h4>
+        <ul class="space-y-2 text-xs">
+          <li><a href="{{ url_for('methodology') }}" class="hover:text-teal-700 transition">11-Phase Methodology</a></li>
+          <li><a href="{{ url_for('sources') }}" class="hover:text-teal-700 transition">Data Sources Provenance</a></li>
+          <li><a href="{{ url_for('limitations') }}" class="hover:text-teal-700 transition">9 Research Limitations</a></li>
+          <li><a href="{{ url_for('admin') }}" class="hover:text-teal-700 transition font-semibold text-teal-800">Admin Console</a></li>
+        </ul>
+        <div class="mt-4 text-[10px] text-slate-400 font-mono">
+          Virudhunagar District, Tamil Nadu &bull; 2025–2026
+        </div>
+      </div>
+    </div>
+  </footer>
+
+  <!-- Leaflet JS -->
+  <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin=""></script>
+  
+  <script>
+    document.getElementById('mobile-menu-btn')?.addEventListener('click', function() {
+      const menu = document.getElementById('mobile-menu');
+      menu.classList.toggle('hidden');
+    });
+  </script>
+
+  {% block extra_scripts %}{% endblock %}
+</body>
+</html>

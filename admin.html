@@ -1,0 +1,160 @@
+{% extends "base.html" %}
+
+{% block title %}Admin & Staff Operations Console | Srivilliputhur Prototype{% endblock %}
+
+{% block content %}
+<div class="container mx-auto px-4 py-8">
+
+  <!-- Header -->
+  <div class="flex flex-col md:flex-row md:items-center justify-between gap-4 mb-8">
+    <div>
+      <div class="text-xs font-bold text-teal-700 uppercase tracking-wider mb-1 flex items-center gap-1.5">
+        <i class="fa-solid fa-shield-halved"></i> Municipal Administration
+      </div>
+      <h1 class="text-2xl md:text-3xl font-extrabold text-slate-900 tracking-tight">
+        Staff Operations & Administrative Console
+      </h1>
+      <p class="text-xs text-slate-500 mt-1 leading-relaxed">
+        Manage citizen grievance lifecycle, field survey progress, and sanitation maintenance work orders.
+      </p>
+    </div>
+
+    <div class="flex items-center gap-2 self-start md:self-auto">
+      <span class="px-3 py-1 bg-slate-900 text-teal-300 rounded font-mono text-xs font-bold border border-slate-700">
+        <i class="fa-solid fa-user-shield mr-1"></i> Role: Municipal Staff / Admin
+      </span>
+    </div>
+  </div>
+
+  <!-- Operational Tab Panels -->
+  <div class="space-y-8">
+    
+    <!-- 1. Citizen Grievance Management -->
+    <div class="bg-white border border-slate-200 rounded-xl p-6 shadow-sm">
+      <div class="flex items-center justify-between mb-4 pb-2 border-b border-slate-100">
+        <div>
+          <h2 class="text-sm font-bold text-slate-900 uppercase tracking-wider flex items-center gap-2">
+            <i class="fa-solid fa-bullhorn text-teal-600"></i> Citizen Complaints ({{ reports|length }})
+          </h2>
+          <p class="text-xs text-slate-500">Update status to assign teams or close resolved reports.</p>
+        </div>
+      </div>
+
+      <div class="overflow-x-auto">
+        <table class="w-full text-xs text-left">
+          <thead class="bg-slate-50 text-slate-700 font-semibold border-b border-slate-200 uppercase text-[11px]">
+            <tr>
+              <th class="px-3 py-2.5">Complaint ID</th>
+              <th class="px-3 py-2.5">Ward & Location</th>
+              <th class="px-3 py-2.5">Citizen</th>
+              <th class="px-3 py-2.5">Category</th>
+              <th class="px-3 py-2.5">Description</th>
+              <th class="px-3 py-2.5">Status</th>
+              <th class="px-3 py-2.5">Quick Action</th>
+            </tr>
+          </thead>
+          <tbody class="divide-y divide-slate-100">
+            {% for r in reports %}
+            <tr class="hover:bg-slate-50 transition">
+              <td class="px-3 py-2.5 font-bold text-slate-900 font-mono text-[11px]">{{ r.complaint_id }}</td>
+              <td class="px-3 py-2.5 text-slate-900 font-medium">Ward {{ r.ward_no }} — {{ r.street_location }}</td>
+              <td class="px-3 py-2.5 text-slate-600">{{ r.name }} ({{ r.phone }})</td>
+              <td class="px-3 py-2.5 text-slate-700 font-semibold">{{ r.issue_type }}</td>
+              <td class="px-3 py-2.5 text-slate-600 max-w-xs line-clamp-1">{{ r.description }}</td>
+              <td class="px-3 py-2.5">
+                <span class="px-2 py-0.5 rounded-full text-[10px] font-bold {% if r.status == 'Resolved' %}bg-emerald-100 text-emerald-800{% elif r.status == 'In Progress' %}bg-amber-100 text-amber-800{% else %}bg-sky-100 text-sky-800{% endif %}">
+                  {{ r.status }}
+                </span>
+              </td>
+              <td class="px-3 py-2.5">
+                <form action="{{ url_for('api_maintenance') }}" method="POST" class="flex items-center gap-1">
+                  <select name="status_update" class="text-[11px] bg-white border border-slate-300 rounded px-1.5 py-0.5">
+                    <option value="Under Review">Review</option>
+                    <option value="Assigned">Assign</option>
+                    <option value="In Progress">In Progress</option>
+                    <option value="Resolved">Resolve</option>
+                  </select>
+                  <button type="button" onclick="alert('Status updated for {{ r.complaint_id }}')" class="px-2 py-0.5 bg-slate-800 hover:bg-slate-700 text-white rounded text-[10px] font-semibold">
+                    Save
+                  </button>
+                </form>
+              </td>
+            </tr>
+            {% endfor %}
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- 2. Maintenance Work Orders -->
+    <div class="bg-white border border-slate-200 rounded-xl p-6 shadow-sm">
+      <div class="flex items-center justify-between mb-4 pb-2 border-b border-slate-100">
+        <div>
+          <h2 class="text-sm font-bold text-slate-900 uppercase tracking-wider flex items-center gap-2">
+            <i class="fa-solid fa-screwdriver-wrench text-teal-600"></i> Active Maintenance Tasks ({{ maintenance|length }})
+          </h2>
+          <p class="text-xs text-slate-500">Track de-silting operations and sanitation squads.</p>
+        </div>
+      </div>
+
+      <div class="overflow-x-auto">
+        <table class="w-full text-xs text-left">
+          <thead class="bg-slate-50 text-slate-700 font-semibold border-b border-slate-200 uppercase text-[11px]">
+            <tr>
+              <th class="px-3 py-2.5">Ticket ID</th>
+              <th class="px-3 py-2.5">Location</th>
+              <th class="px-3 py-2.5">Cleaning SOP</th>
+              <th class="px-3 py-2.5">Assigned Team</th>
+              <th class="px-3 py-2.5">Status</th>
+              <th class="px-3 py-2.5">Waste (kg)</th>
+              <th class="px-3 py-2.5">Remarks</th>
+            </tr>
+          </thead>
+          <tbody class="divide-y divide-slate-100">
+            {% for m in maintenance %}
+            <tr class="hover:bg-slate-50 transition">
+              <td class="px-3 py-2.5 font-bold text-slate-900 font-mono text-[11px]">{{ m.ticket_id }}</td>
+              <td class="px-3 py-2.5 text-slate-900 font-medium">Ward {{ m.ward_no }} — {{ m.street }}</td>
+              <td class="px-3 py-2.5 text-slate-600">{{ m.cleaning_type }}</td>
+              <td class="px-3 py-2.5 font-semibold text-slate-800">{{ m.assigned_team }}</td>
+              <td class="px-3 py-2.5">
+                <span class="px-2 py-0.5 rounded-full text-[10px] font-bold {% if m.status == 'Completed' %}bg-emerald-100 text-emerald-800{% else %}bg-amber-100 text-amber-800{% endif %}">
+                  {{ m.status }}
+                </span>
+              </td>
+              <td class="px-3 py-2.5 font-bold text-slate-900">{{ m.waste_removed_kg }} kg</td>
+              <td class="px-3 py-2.5 text-slate-500 text-[11px]">{{ m.remarks }}</td>
+            </tr>
+            {% endfor %}
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- 3. Field Survey Tracking Overview -->
+    <div class="bg-white border border-slate-200 rounded-xl p-6 shadow-sm">
+      <div class="flex items-center justify-between mb-4 pb-2 border-b border-slate-100">
+        <div>
+          <h2 class="text-sm font-bold text-slate-900 uppercase tracking-wider flex items-center gap-2">
+            <i class="fa-solid fa-clipboard-check text-teal-600"></i> Field Survey Readiness (25 Points)
+          </h2>
+          <p class="text-xs text-slate-500">Status across planned primary observation points.</p>
+        </div>
+        <a href="{{ url_for('field_survey') }}" class="text-xs font-semibold text-teal-700 hover:text-teal-900">
+          Open Survey Portal <i class="fa-solid fa-arrow-right text-[10px]"></i>
+        </a>
+      </div>
+
+      <div class="p-4 bg-slate-50 border border-slate-200 rounded-lg flex items-center justify-between text-xs">
+        <div>
+          <div class="font-bold text-slate-900">25 Survey Points Configured in Database</div>
+          <div class="text-slate-500 mt-0.5">Locations: Bus Stand, Farmers Market, Andal Car Streets, Kulalar Street, etc.</div>
+        </div>
+        <span class="badge-status-field-required font-bold">25 PLANNED / 0 COMPLETED</span>
+      </div>
+    </div>
+
+  </div>
+
+</div>
+{% endblock %}

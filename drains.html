@@ -1,0 +1,155 @@
+{% extends "base.html" %}
+
+{% block title %}Drainage Data Explorer | Srivilliputhur Prototype{% endblock %}
+
+{% block content %}
+<div class="container mx-auto px-4 py-8">
+
+  <!-- Header -->
+  <div class="flex flex-col md:flex-row md:items-center justify-between gap-4 mb-6">
+    <div>
+      <div class="text-xs font-bold text-teal-700 uppercase tracking-wider mb-1 flex items-center gap-1.5">
+        <i class="fa-solid fa-table-list"></i> Municipal Asset Registry
+      </div>
+      <h1 class="text-2xl md:text-3xl font-extrabold text-slate-900 tracking-tight">
+        Drainage Data Explorer
+      </h1>
+      <p class="text-xs text-slate-500 mt-0.5">
+        Searchable table presenting 1 verified public tender drain and 50 synthetic prototype records. Missing parameters are displayed strictly as <em>Not Available</em>.
+      </p>
+    </div>
+    
+    <!-- Table Quick Filters -->
+    <div class="flex items-center gap-2">
+      <input type="text" id="table-search" placeholder="Search ward, street, drain ID..." class="text-xs bg-white border border-slate-300 rounded-lg px-3 py-2 w-64 shadow-sm focus:ring-1 focus:ring-teal-500">
+      <select id="status-filter" class="text-xs bg-white border border-slate-300 rounded-lg px-2.5 py-2 shadow-sm">
+        <option value="ALL">All Records (51)</option>
+        <option value="VERIFIED_PUBLIC">Verified Public (1)</option>
+        <option value="SYNTHETIC">Synthetic Prototype (50)</option>
+      </select>
+    </div>
+  </div>
+
+  <!-- Table Container -->
+  <div class="bg-white border border-slate-200 rounded-xl shadow-sm overflow-hidden">
+    <div class="overflow-x-auto">
+      <table id="drains-table" class="w-full text-xs text-left">
+        <thead class="bg-slate-50 text-slate-700 font-semibold border-b border-slate-200 uppercase text-[11px]">
+          <tr>
+            <th class="px-3 py-3">Drain ID</th>
+            <th class="px-3 py-3">Ward</th>
+            <th class="px-3 py-3">Street / Location</th>
+            <th class="px-3 py-3">Drain Type</th>
+            <th class="px-3 py-3">Length (m)</th>
+            <th class="px-3 py-3">Dimensions (W×D)</th>
+            <th class="px-3 py-3">Culverts</th>
+            <th class="px-3 py-3">Blockage %</th>
+            <th class="px-3 py-3">Plastic Level</th>
+            <th class="px-3 py-3">Water Depth</th>
+            <th class="px-3 py-3">Last Cleaned</th>
+            <th class="px-3 py-3">Risk Level</th>
+            <th class="px-3 py-3">Data Status</th>
+          </tr>
+        </thead>
+        <tbody class="divide-y divide-slate-100">
+          
+          <!-- 1. Verified Public Drain (1B) -->
+          {% for vd in verified_drains %}
+          <tr class="bg-sky-50/50 hover:bg-sky-100/50 transition font-medium">
+            <td class="px-3 py-2.5 font-bold text-sky-900">{{ vd.drain_id }}</td>
+            <td class="px-3 py-2.5">Ward {{ vd.ward_no }}</td>
+            <td class="px-3 py-2.5 text-slate-900">{{ vd.street_name }}</td>
+            <td class="px-3 py-2.5 text-slate-700">{{ vd.drain_type }}</td>
+            <td class="px-3 py-2.5 text-slate-700">{{ vd.drain_length_m }} m</td>
+            <td class="px-3 py-2.5 text-slate-700">{{ vd.drain_width_m }}m × {{ vd.drain_depth_m }}m</td>
+            <td class="px-3 py-2.5 text-slate-700">{{ vd.culvert_count }}</td>
+            <td class="px-3 py-2.5 text-slate-400 italic">Not Available</td>
+            <td class="px-3 py-2.5 text-slate-400 italic">Not Available</td>
+            <td class="px-3 py-2.5 text-slate-400 italic">Not Available</td>
+            <td class="px-3 py-2.5 text-slate-400 italic">Not Available</td>
+            <td class="px-3 py-2.5 text-slate-400 italic">Not Available</td>
+            <td class="px-3 py-2.5">
+              <span class="badge-status-verified">VERIFIED_PUBLIC</span>
+            </td>
+          </tr>
+          {% endfor %}
+
+          <!-- 2. Synthetic ML Prototype Drains (50) -->
+          {% for sd in synthetic_drains %}
+          <tr class="hover:bg-slate-50 transition drain-row" data-status="SYNTHETIC">
+            <td class="px-3 py-2.5 font-semibold text-slate-800 font-mono text-[11px]">{{ sd.drain_id }}</td>
+            <td class="px-3 py-2.5 text-slate-700">Ward {{ sd.ward_no }}</td>
+            <td class="px-3 py-2.5 text-slate-900 font-medium">{{ sd.street_name }}</td>
+            <td class="px-3 py-2.5 text-slate-600">{{ sd.drain_type }}</td>
+            <td class="px-3 py-2.5 text-slate-400 italic">Not Available</td>
+            <td class="px-3 py-2.5 text-slate-700">{{ sd.drain_width_m }}m × {{ sd.drain_depth_m }}m</td>
+            <td class="px-3 py-2.5 text-slate-400 italic">Not Available</td>
+            <td class="px-3 py-2.5 font-bold {% if sd.blockage_percent > 50 %}text-amber-700{% else %}text-emerald-700{% endif %}">
+              {{ sd.blockage_percent }}%
+            </td>
+            <td class="px-3 py-2.5 text-slate-700">
+              {{ sd.plastic_accumulation_level }} (Score {{ sd.plastic_accumulation_score }})
+            </td>
+            <td class="px-3 py-2.5 text-slate-700">{{ sd.water_level_cm }} cm</td>
+            <td class="px-3 py-2.5 text-slate-700">{{ sd.days_since_cleaning }} days ago</td>
+            <td class="px-3 py-2.5">
+              {% if sd.overflow_risk_label == 'MEDIUM' %}
+                <span class="badge-risk-medium">MEDIUM</span>
+              {% elif sd.overflow_risk_label == 'LOW' %}
+                <span class="badge-risk-low">LOW</span>
+              {% else %}
+                <span class="badge-risk-high">HIGH</span>
+              {% endif %}
+            </td>
+            <td class="px-3 py-2.5">
+              <span class="badge-status-synthetic">SYNTHETIC</span>
+            </td>
+          </tr>
+          {% endfor %}
+
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <!-- Anti-Hallucination Table Disclaimer Note -->
+  <div class="mt-4 p-3 bg-slate-100 border border-slate-200 rounded-lg text-xs text-slate-600 flex items-center justify-between">
+    <div class="flex items-center gap-2">
+      <i class="fa-solid fa-circle-info text-teal-700"></i>
+      <span><strong>Data Provenance Rule:</strong> Missing fields are explicitly marked <em>Not Available</em>. No synthetic dimensions or blockage values have been mixed into verified public records.</span>
+    </div>
+    <span class="text-[11px] text-slate-400 font-mono">Total Records: 51</span>
+  </div>
+
+</div>
+{% endblock %}
+
+{% block extra_scripts %}
+<script>
+  // Simple table search and filter
+  const searchInput = document.getElementById('table-search');
+  const statusFilter = document.getElementById('status-filter');
+  const rows = document.querySelectorAll('.drain-row');
+
+  function filterTable() {
+    const q = searchInput.value.toLowerCase();
+    const status = statusFilter.value;
+
+    rows.forEach(r => {
+      const text = r.innerText.toLowerCase();
+      const rowStatus = r.getAttribute('data-status');
+      const matchesSearch = text.includes(q);
+      const matchesStatus = (status === 'ALL' || status === rowStatus);
+
+      if (matchesSearch && matchesStatus) {
+        r.style.display = '';
+      } else {
+        r.style.display = 'none';
+      }
+    });
+  }
+
+  searchInput?.addEventListener('input', filterTable);
+  statusFilter?.addEventListener('change', filterTable);
+</script>
+{% endblock %}

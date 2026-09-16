@@ -1,0 +1,181 @@
+{% extends "base.html" %}
+
+{% block title %}Citizen Drainage Grievance Portal | Srivilliputhur Prototype{% endblock %}
+
+{% block content %}
+<div class="container mx-auto px-4 py-8">
+
+  <!-- Header -->
+  <div class="max-w-4xl mb-8">
+    <div class="text-xs font-bold text-teal-700 uppercase tracking-wider mb-1 flex items-center gap-1.5">
+      <i class="fa-solid fa-bullhorn"></i> Public Civic Engagement
+    </div>
+    <h1 class="text-2xl md:text-3xl font-extrabold text-slate-900 tracking-tight">
+      Citizen Drainage & Waste Complaint Portal
+    </h1>
+    <p class="text-xs text-slate-500 mt-1 leading-relaxed">
+      Report clogged storm channels, illegal plastic dumping, and stagnant waterlogging directly to Srivilliputhur Municipality.
+    </p>
+  </div>
+
+  <div class="grid grid-cols-1 lg:grid-cols-12 gap-8">
+    
+    <!-- Report Submission Form (7 Cols) -->
+    <div class="lg:col-span-7 bg-white border border-slate-200 rounded-xl p-6 shadow-sm">
+      <h2 class="text-base font-bold text-slate-900 mb-1 flex items-center gap-2">
+        <i class="fa-solid fa-pen-to-square text-teal-600"></i> File a Drainage Issue
+      </h2>
+      <p class="text-xs text-slate-500 mb-6">Your report generates an official prototype tracking ID for municipal remediation.</p>
+
+      <form action="{{ url_for('report') }}" method="POST" class="space-y-4 text-xs">
+        
+        <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+          <div>
+            <label class="block font-semibold text-slate-700 mb-1">Citizen Name (Optional)</label>
+            <input type="text" name="name" placeholder="e.g. K. Murugan" class="w-full bg-white border border-slate-300 rounded px-3 py-2 text-xs">
+          </div>
+          <div>
+            <label class="block font-semibold text-slate-700 mb-1">Phone / Mobile (Optional)</label>
+            <input type="tel" name="phone" placeholder="e.g. 9876543210" class="w-full bg-white border border-slate-300 rounded px-3 py-2 text-xs">
+          </div>
+        </div>
+
+        <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+          <div>
+            <label class="block font-semibold text-slate-700 mb-1">Ward Number *</label>
+            <select name="ward_no" class="w-full bg-white border border-slate-300 rounded px-3 py-2 text-xs" required>
+              <option value="">Select Ward (1 to 33)</option>
+              {% for w in range(1, 34) %}
+                <option value="{{ w }}">Ward {{ w }}</option>
+              {% endfor %}
+            </select>
+          </div>
+          <div>
+            <label class="block font-semibold text-slate-700 mb-1">Issue Category *</label>
+            <select name="issue_type" class="w-full bg-white border border-slate-300 rounded px-3 py-2 text-xs" required>
+              <option value="Blocked Drain">Blocked Drain (Silt / Solid Waste)</option>
+              <option value="Plastic Waste">Plastic Waste Accumulation</option>
+              <option value="Drain Overflow">Drain Overflow / Sewage on Road</option>
+              <option value="Waterlogging">Waterlogging / Stagnant Pool</option>
+              <option value="Open Drain">Open Drain / Broken Slab Hazard</option>
+              <option value="Garbage Accumulation">Garbage Accumulation in Culvert</option>
+              <option value="Other">Other Drainage Issue</option>
+            </select>
+          </div>
+        </div>
+
+        <div>
+          <label class="block font-semibold text-slate-700 mb-1">Street Name & Landmark *</label>
+          <input type="text" name="street_location" placeholder="e.g. Car Street near Andal Temple Arch" class="w-full bg-white border border-slate-300 rounded px-3 py-2 text-xs" required>
+        </div>
+
+        <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+          <div>
+            <label class="block font-semibold text-slate-700 mb-1">GPS Latitude (Optional)</label>
+            <input type="number" step="0.0001" id="gps_lat" name="gps_lat" placeholder="e.g. 9.5165" class="w-full bg-white border border-slate-300 rounded px-3 py-2 text-xs">
+          </div>
+          <div>
+            <label class="block font-semibold text-slate-700 mb-1">GPS Longitude (Optional)</label>
+            <input type="number" step="0.0001" id="gps_lng" name="gps_lng" placeholder="e.g. 77.6241" class="w-full bg-white border border-slate-300 rounded px-3 py-2 text-xs">
+          </div>
+        </div>
+
+        <div>
+          <label class="block font-semibold text-slate-700 mb-1">Detailed Description of Problem *</label>
+          <textarea name="description" rows="3" placeholder="Describe the blockage, plastic presence, odor, or water depth observed..." class="w-full bg-white border border-slate-300 rounded px-3 py-2 text-xs" required></textarea>
+        </div>
+
+        <div>
+          <label class="block font-semibold text-slate-700 mb-1">Photo Evidence (Prototype Simulation)</label>
+          <input type="file" class="w-full text-xs text-slate-500 file:mr-3 file:py-1.5 file:px-3 file:rounded file:border-0 file:text-xs file:font-semibold file:bg-teal-50 file:text-teal-700 hover:file:bg-teal-100">
+        </div>
+
+        <button type="submit" class="w-full py-3 bg-teal-700 hover:bg-teal-600 text-white font-bold text-xs rounded-lg shadow-sm transition flex items-center justify-center gap-2">
+          <i class="fa-solid fa-paper-plane"></i> Submit Grievance Report
+        </button>
+      </form>
+    </div>
+
+    <!-- Complaint Tracker & Status Flow (5 Cols) -->
+    <div class="lg:col-span-5 space-y-6">
+      
+      <!-- Complaint Status Tracker Card -->
+      <div class="bg-white border border-slate-200 rounded-xl p-5 shadow-sm">
+        <h3 class="text-xs font-bold text-slate-900 uppercase tracking-wider mb-2 flex items-center gap-2">
+          <i class="fa-solid fa-magnifying-glass text-teal-600"></i> Track Existing Complaint
+        </h3>
+        <p class="text-xs text-slate-500 mb-3">Enter your Complaint ID to view municipal resolution progress.</p>
+        
+        <form action="{{ url_for('report') }}" method="GET" class="flex gap-2 mb-4">
+          <input type="text" name="tracked_id" placeholder="e.g. SVP-REP-2026-0001" class="w-full text-xs bg-white border border-slate-300 rounded px-3 py-2 font-mono uppercase" required>
+          <button type="submit" class="px-4 py-2 bg-slate-800 hover:bg-slate-700 text-white text-xs font-semibold rounded shadow-sm">
+            Track
+          </button>
+        </form>
+
+        {% if tracked_report %}
+        <div class="p-4 bg-teal-50/50 border border-teal-200 rounded-lg text-xs space-y-2">
+          <div class="flex items-center justify-between border-b border-teal-200/60 pb-2">
+            <span class="font-bold text-slate-900 font-mono">{{ tracked_report.complaint_id }}</span>
+            <span class="px-2.5 py-0.5 rounded-full text-[11px] font-bold {% if tracked_report.status == 'Resolved' %}bg-emerald-100 text-emerald-800 border border-emerald-300{% elif tracked_report.status == 'In Progress' %}bg-amber-100 text-amber-800 border border-amber-300{% else %}bg-sky-100 text-sky-800 border border-sky-300{% endif %}">
+              {{ tracked_report.status }}
+            </span>
+          </div>
+          <div><strong>Location:</strong> Ward {{ tracked_report.ward_no }} — {{ tracked_report.street_location }}</div>
+          <div><strong>Category:</strong> {{ tracked_report.issue_type }}</div>
+          <div><strong>Details:</strong> {{ tracked_report.description }}</div>
+          <div class="text-[10px] text-slate-400 pt-1">Reported on: {{ tracked_report.created_at }}</div>
+        </div>
+        {% endif %}
+      </div>
+
+      <!-- 5-Stage Prototype Workflow Explanation -->
+      <div class="bg-white border border-slate-200 rounded-xl p-5 shadow-sm">
+        <h3 class="text-xs font-bold text-slate-900 uppercase tracking-wider mb-3">
+          5-Stage Municipal Resolution Flow
+        </h3>
+        
+        <div class="space-y-3 text-xs">
+          <div class="flex items-start gap-3">
+            <div class="w-6 h-6 rounded-full bg-slate-100 text-slate-700 flex items-center justify-center font-bold text-xs flex-shrink-0">1</div>
+            <div>
+              <div class="font-bold text-slate-900">Submitted</div>
+              <div class="text-slate-500 text-[11px]">Grievance ticket created with unique ID and logged into municipal database.</div>
+            </div>
+          </div>
+          <div class="flex items-start gap-3">
+            <div class="w-6 h-6 rounded-full bg-sky-100 text-sky-700 flex items-center justify-center font-bold text-xs flex-shrink-0">2</div>
+            <div>
+              <div class="font-bold text-slate-900">Under Review</div>
+              <div class="text-slate-500 text-[11px]">Engineering cell validates street location and cross-references risk model.</div>
+            </div>
+          </div>
+          <div class="flex items-start gap-3">
+            <div class="w-6 h-6 rounded-full bg-amber-100 text-amber-700 flex items-center justify-center font-bold text-xs flex-shrink-0">3</div>
+            <div>
+              <div class="font-bold text-slate-900">Assigned</div>
+              <div class="text-slate-500 text-[11px]">Dispatched to Ward Sanitary Inspector and designated sanitation squad.</div>
+            </div>
+          </div>
+          <div class="flex items-start gap-3">
+            <div class="w-6 h-6 rounded-full bg-purple-100 text-purple-700 flex items-center justify-center font-bold text-xs flex-shrink-0">4</div>
+            <div>
+              <div class="font-bold text-slate-900">In Progress</div>
+              <div class="text-slate-500 text-[11px]">Physical de-silting, plastic clearance, or suction jetting actively underway.</div>
+            </div>
+          </div>
+          <div class="flex items-start gap-3">
+            <div class="w-6 h-6 rounded-full bg-emerald-100 text-emerald-700 flex items-center justify-center font-bold text-xs flex-shrink-0">5</div>
+            <div>
+              <div class="font-bold text-slate-900">Resolved</div>
+              <div class="text-slate-500 text-[11px]">Channel unblocked, photos verified by inspector, ticket closed.</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+
+  </div>
+</div>
+{% endblock %}

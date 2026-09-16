@@ -1,0 +1,166 @@
+{% extends "base.html" %}
+
+{% block title %}Data Sources & Provenance | Srivilliputhur Prototype{% endblock %}
+
+{% block content %}
+<div class="container mx-auto px-4 py-8">
+
+  <!-- Header -->
+  <div class="max-w-4xl mb-8">
+    <div class="text-xs font-bold text-teal-700 uppercase tracking-wider mb-1 flex items-center gap-1.5">
+      <i class="fa-solid fa-book-bookmark"></i> Provenance Register
+    </div>
+    <h1 class="text-2xl md:text-3xl font-extrabold text-slate-900 tracking-tight">
+      Data Sources & Verification Provenance
+    </h1>
+    <p class="text-xs text-slate-500 mt-1 leading-relaxed">
+      Comprehensive catalog of public records, government portals, news publications, and tenders utilized in this academic prototype.
+    </p>
+  </div>
+
+  <!-- Anti-Fabrication Notice Banner (Section 21) -->
+  <div class="p-4 bg-sky-50 border-l-4 border-sky-600 rounded-r-xl mb-8 shadow-sm text-xs text-sky-950">
+    <div class="flex items-center gap-2 font-bold uppercase tracking-wider mb-1">
+      <i class="fa-solid fa-file-circle-check text-sky-700"></i> Strict Source Provenance Rule
+    </div>
+    <p class="leading-relaxed">
+      <strong>Do not claim that a source provides data that it does not actually provide.</strong>
+      Each source is documented strictly according to the verifiable parameters extracted during research.
+    </p>
+  </div>
+
+  <!-- Sources Table -->
+  <div class="bg-white border border-slate-200 rounded-xl shadow-sm overflow-hidden mb-8">
+    <div class="overflow-x-auto">
+      <table class="w-full text-xs text-left">
+        <thead class="bg-slate-50 text-slate-700 font-semibold border-b border-slate-200 uppercase text-[11px]">
+          <tr>
+            <th class="px-3 py-3">Source Name</th>
+            <th class="px-3 py-3">Source Category</th>
+            <th class="px-3 py-3">Data Extracted / Used</th>
+            <th class="px-3 py-3">Data Status</th>
+            <th class="px-3 py-3">Verified Link / Reference</th>
+          </tr>
+        </thead>
+        <tbody class="divide-y divide-slate-100">
+          
+          <!-- Source 1: Municipality Portal -->
+          <tr class="hover:bg-slate-50 transition">
+            <td class="px-3 py-3 font-bold text-slate-900">Srivilliputhur Municipality Official Portal</td>
+            <td class="px-3 py-3 text-slate-600">Local Body Administration</td>
+            <td class="px-3 py-3 text-slate-700">33 Municipal Wards list, town history, administrative hierarchy.</td>
+            <td class="px-3 py-3"><span class="badge-status-verified">VERIFIED_PUBLIC</span></td>
+            <td class="px-3 py-3">
+              <a href="https://srivilliputhur.nic.in" target="_blank" rel="noopener noreferrer" class="text-teal-700 hover:text-teal-900 font-semibold flex items-center gap-1">
+                Official Portal <i class="fa-solid fa-arrow-up-right-from-square text-[9px]"></i>
+              </a>
+            </td>
+          </tr>
+
+          <!-- Source 2: TN Urban Local Bodies -->
+          <tr class="hover:bg-slate-50 transition">
+            <td class="px-3 py-3 font-bold text-slate-900">Commissioner of Municipal Administration (CMA TN)</td>
+            <td class="px-3 py-3 text-slate-600">State Urban Department</td>
+            <td class="px-3 py-3 text-slate-700">33 Ward LGD codes, 2011 Census population distribution (75,396 citizens).</td>
+            <td class="px-3 py-3"><span class="badge-status-verified">VERIFIED_PUBLIC</span></td>
+            <td class="px-3 py-3">
+              <a href="https://tnurbantree.tn.gov.in" target="_blank" rel="noopener noreferrer" class="text-teal-700 hover:text-teal-900 font-semibold flex items-center gap-1">
+                TN Urban Tree <i class="fa-solid fa-arrow-up-right-from-square text-[9px]"></i>
+              </a>
+            </td>
+          </tr>
+
+          <!-- Source 3: NWDP Rainfall Districtwise -->
+          <tr class="hover:bg-slate-50 transition">
+            <td class="px-3 py-3 font-bold text-slate-900">National Water Data Portal (NWDP) / IMD</td>
+            <td class="px-3 py-3 text-slate-600">Central Hydro-Meteorological</td>
+            <td class="px-3 py-3 text-slate-700">Virudhunagar District-wise daily rainfall CSV resource.</td>
+            <td class="px-3 py-3"><span class="badge-status-verified">VERIFIED_PUBLIC</span></td>
+            <td class="px-3 py-3">
+              <a href="https://www.nwdp.nwic.gov.in/en/dataset/rainfall-daily-imd/resource/8752174f-1d17-4aaf-8058-2eb396f50157" target="_blank" rel="noopener noreferrer" class="text-teal-700 hover:text-teal-900 font-semibold flex items-center gap-1">
+                NWDP Resource <i class="fa-solid fa-arrow-up-right-from-square text-[9px]"></i>
+              </a>
+            </td>
+          </tr>
+
+          <!-- Source 4: IMD CRIS -->
+          <tr class="hover:bg-slate-50 transition">
+            <td class="px-3 py-3 font-bold text-slate-900">IMD Customized Rainfall Information System (CRIS)</td>
+            <td class="px-3 py-3 text-slate-600">Central Meteorological</td>
+            <td class="px-3 py-3 text-slate-700">District rainfall statistics & monsoon departure figures.</td>
+            <td class="px-3 py-3"><span class="badge-status-verified">VERIFIED_PUBLIC</span></td>
+            <td class="px-3 py-3">
+              <a href="https://cris.imd.gov.in" target="_blank" rel="noopener noreferrer" class="text-teal-700 hover:text-teal-900 font-semibold flex items-center gap-1">
+                CRIS Portal <i class="fa-solid fa-arrow-up-right-from-square text-[9px]"></i>
+              </a>
+            </td>
+          </tr>
+
+          <!-- Source 5: SFD Lite Report -->
+          <tr class="hover:bg-slate-50 transition">
+            <td class="px-3 py-3 font-bold text-slate-900">SFD Lite Report — Srivilliputhur Municipality</td>
+            <td class="px-3 py-3 text-slate-600">Sanitation & Urban Drainage Study</td>
+            <td class="px-3 py-3 text-slate-700">101.1 km total drain network (92.4 km surfaced), open drains laden with grey water & plastic, 31 TPD solid waste.</td>
+            <td class="px-3 py-3"><span class="badge-status-historical">HISTORICAL_PUBLIC</span></td>
+            <td class="px-3 py-3">
+              <span class="text-slate-500 italic">CSE / SuSanA SFD Repository</span>
+            </td>
+          </tr>
+
+          <!-- Source 6: Tender Records -->
+          <tr class="hover:bg-slate-50 transition">
+            <td class="px-3 py-3 font-bold text-slate-900">MunicipalityTenders.co.in / TN Tenders</td>
+            <td class="px-3 py-3 text-slate-600">Public Procurement Contract</td>
+            <td class="px-3 py-3 text-slate-700">Ward 32 Bharathi Nagar 3rd St Road storm water drain construction (120m length, 0.6m width, 0.8m depth, box culvert).</td>
+            <td class="px-3 py-3"><span class="badge-status-verified">VERIFIED_PUBLIC</span></td>
+            <td class="px-3 py-3">
+              <a href="https://www.municipalitytenders.co.in/searchresult/?pg=5&st=txt&sf=0&sd=road-construction-tamil-nadu-tenders" target="_blank" rel="noopener noreferrer" class="text-teal-700 hover:text-teal-900 font-semibold flex items-center gap-1">
+                Tender Record <i class="fa-solid fa-arrow-up-right-from-square text-[9px]"></i>
+              </a>
+            </td>
+          </tr>
+
+          <!-- Source 7: Historical News Archives -->
+          <tr class="hover:bg-slate-50 transition">
+            <td class="px-3 py-3 font-bold text-slate-900">Dinamalar, Samayam Tamil, OneIndia Tamil, Hindu Tamil</td>
+            <td class="px-3 py-3 text-slate-600">Regional News Media Archives</td>
+            <td class="px-3 py-3 text-slate-700">12 historical flood, waterlogging, and tank breach incidents (2019–2026).</td>
+            <td class="px-3 py-3"><span class="badge-status-historical">HISTORICAL_PUBLIC</span></td>
+            <td class="px-3 py-3">
+              <a href="{{ url_for('incidents') }}" class="text-teal-700 hover:text-teal-900 font-semibold flex items-center gap-1">
+                View 12 Incident URLs <i class="fa-solid fa-arrow-right text-[9px]"></i>
+              </a>
+            </td>
+          </tr>
+
+          <!-- Source 8: Theekkathir News -->
+          <tr class="hover:bg-slate-50 transition">
+            <td class="px-3 py-3 font-bold text-slate-900">Theekkathir Tamil Daily (2026)</td>
+            <td class="px-3 py-3 text-slate-600">News Media</td>
+            <td class="px-3 py-3 text-slate-700">Ward 19 Netaji Road plastic ban enforcement; municipal fines imposed for littering.</td>
+            <td class="px-3 py-3"><span class="badge-status-verified">VERIFIED_PUBLIC</span></td>
+            <td class="px-3 py-3">
+              <span class="text-slate-500 italic">Published Report (2026)</span>
+            </td>
+          </tr>
+
+          <!-- Source 9: OpenStreetMap -->
+          <tr class="hover:bg-slate-50 transition">
+            <td class="px-3 py-3 font-bold text-slate-900">OpenStreetMap Contributors</td>
+            <td class="px-3 py-3 text-slate-600">Open Cartography</td>
+            <td class="px-3 py-3 text-slate-700">Base road geometry, Andal Temple car streets, landmark coordinate verification.</td>
+            <td class="px-3 py-3"><span class="badge-status-verified">VERIFIED_PUBLIC</span></td>
+            <td class="px-3 py-3">
+              <a href="https://www.openstreetmap.org" target="_blank" rel="noopener noreferrer" class="text-teal-700 hover:text-teal-900 font-semibold flex items-center gap-1">
+                OpenStreetMap.org <i class="fa-solid fa-arrow-up-right-from-square text-[9px]"></i>
+              </a>
+            </td>
+          </tr>
+
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+</div>
+{% endblock %}

@@ -1,0 +1,116 @@
+{% extends "base.html" %}
+
+{% block title %}Maintenance & De-silting Operations | Srivilliputhur Prototype{% endblock %}
+
+{% block content %}
+<div class="container mx-auto px-4 py-8">
+
+  <!-- Header -->
+  <div class="flex flex-col md:flex-row md:items-center justify-between gap-4 mb-8">
+    <div>
+      <div class="text-xs font-bold text-teal-700 uppercase tracking-wider mb-1 flex items-center gap-1.5">
+        <i class="fa-solid fa-screwdriver-wrench"></i> Operational Engineering
+      </div>
+      <h1 class="text-2xl md:text-3xl font-extrabold text-slate-900 tracking-tight">
+        Drainage Maintenance & De-silting Operations
+      </h1>
+      <p class="text-xs text-slate-500 mt-1 leading-relaxed">
+        Municipal sanitation dispatch log, de-silting schedules, culvert jetting tasks, and waste removal metrics.
+      </p>
+    </div>
+    
+    <a href="{{ url_for('admin') }}" class="px-4 py-2 bg-slate-800 hover:bg-slate-700 text-white rounded-lg text-xs font-semibold shadow-sm transition flex items-center gap-1.5 self-start md:self-auto">
+      <i class="fa-solid fa-plus text-[10px]"></i> Dispatch New Maintenance Order
+    </a>
+  </div>
+
+  <!-- Operational Guardrail Notice (Section 18) -->
+  <div class="p-4 bg-slate-100 border-l-4 border-slate-700 rounded-r-xl mb-8 shadow-sm text-xs text-slate-700">
+    <div class="flex items-center gap-2 font-bold text-slate-900 uppercase tracking-wider mb-1">
+      <i class="fa-solid fa-clipboard-check text-teal-700"></i> Maintenance Data Integrity Rule
+    </div>
+    <p class="leading-relaxed">
+      Historical municipal maintenance schedules are not publicly archived in open data portals. The records below illustrate the <strong>prototype operational workflow</strong> with statuses: <span class="font-bold font-mono">Pending &rarr; Assigned &rarr; In Progress &rarr; Completed &rarr; Verified</span>.
+    </p>
+  </div>
+
+  <!-- Maintenance Orders Table -->
+  <div class="bg-white border border-slate-200 rounded-xl shadow-sm overflow-hidden mb-8">
+    <div class="overflow-x-auto">
+      <table class="w-full text-xs text-left">
+        <thead class="bg-slate-50 text-slate-700 font-semibold border-b border-slate-200 uppercase text-[11px]">
+          <tr>
+            <th class="px-3 py-3">Work Order ID</th>
+            <th class="px-3 py-3">Drain Reference</th>
+            <th class="px-3 py-3">Ward</th>
+            <th class="px-3 py-3">Street / Landmark</th>
+            <th class="px-3 py-3">Reported Issue</th>
+            <th class="px-3 py-3">Cleaning Type</th>
+            <th class="px-3 py-3">Assigned Sanitation Team</th>
+            <th class="px-3 py-3">Waste Removed (kg)</th>
+            <th class="px-3 py-3">Status</th>
+            <th class="px-3 py-3">Remarks / Protocol</th>
+          </tr>
+        </thead>
+        <tbody class="divide-y divide-slate-100">
+          {% for m in records %}
+          <tr class="hover:bg-slate-50 transition">
+            <td class="px-3 py-3 font-bold text-slate-900 font-mono text-[11px] whitespace-nowrap">{{ m.ticket_id }}</td>
+            <td class="px-3 py-3 font-mono text-[11px] text-teal-800 font-semibold">{{ m.drain_id if m.drain_id else 'General Ward Asset' }}</td>
+            <td class="px-3 py-3">Ward {{ m.ward_no }}</td>
+            <td class="px-3 py-3 font-medium text-slate-900">{{ m.street }}</td>
+            <td class="px-3 py-3 text-slate-600">{{ m.issue_description }}</td>
+            <td class="px-3 py-3">
+              <span class="px-2 py-0.5 rounded text-[11px] font-medium bg-slate-100 text-slate-700 border border-slate-200">
+                {{ m.cleaning_type if m.cleaning_type else 'Manual De-silting' }}
+              </span>
+            </td>
+            <td class="px-3 py-3 text-slate-700 font-medium">{{ m.assigned_team if m.assigned_team else 'Pending Squad Assignment' }}</td>
+            <td class="px-3 py-3 font-bold text-slate-900">
+              {{ m.waste_removed_kg ~ ' kg' if m.waste_removed_kg else 'Pending Weighed Weighbill' }}
+            </td>
+            <td class="px-3 py-3">
+              <span class="px-2.5 py-1 rounded-full text-[10px] font-bold {% if m.status == 'Completed' %}bg-emerald-100 text-emerald-800 border border-emerald-300{% elif m.status == 'In Progress' %}bg-amber-100 text-amber-800 border border-amber-300{% else %}bg-sky-100 text-sky-800 border border-sky-300{% endif %}">
+                {{ m.status }}
+              </span>
+            </td>
+            <td class="px-3 py-3 text-slate-500 max-w-xs">{{ m.remarks if m.remarks else 'Standard municipal sanitation SOP.' }}</td>
+          </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <!-- Operational Flow Reference -->
+  <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+    <div class="bg-white border border-slate-200 rounded-xl p-5 shadow-sm">
+      <div class="text-xs font-bold text-slate-900 uppercase tracking-wider mb-2 flex items-center gap-2">
+        <i class="fa-solid fa-broom text-teal-600"></i> Manual De-silting SOP
+      </div>
+      <p class="text-xs text-slate-600 leading-relaxed">
+        Applied to open masonry channels along bazaar streets and residential lanes. Solid sediment and accumulated plastics scooped out and hauled to municipal RRC points.
+      </p>
+    </div>
+
+    <div class="bg-white border border-slate-200 rounded-xl p-5 shadow-sm">
+      <div class="text-xs font-bold text-slate-900 uppercase tracking-wider mb-2 flex items-center gap-2">
+        <i class="fa-solid fa-spray-can-sparkles text-sky-600"></i> High-Pressure Culvert Jetting
+      </div>
+      <p class="text-xs text-slate-600 leading-relaxed">
+        Hydraulic suction jetting truck utilized for covered storm drains and cross-road box culverts (e.g. Bharathi Nagar 3rd Street culvert chainage 73m).
+      </p>
+    </div>
+
+    <div class="bg-white border border-slate-200 rounded-xl p-5 shadow-sm">
+      <div class="text-xs font-bold text-slate-900 uppercase tracking-wider mb-2 flex items-center gap-2">
+        <i class="fa-solid fa-camera-retro text-purple-600"></i> Post-Clearance Verification
+      </div>
+      <p class="text-xs text-slate-600 leading-relaxed">
+        Ward Sanitary Inspector conducts visual cross-section verification. Unobstructed flow required before ticket status is updated to <em>Verified</em>.
+      </p>
+    </div>
+  </div>
+
+</div>
+{% endblock %}
